@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sarva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bb:#dcc7a9;--bb2:#efe4d3;--bt:#4a3626;--bg:#fff;--ink:#2b211b;--mute:#8a7b70;--acc:#8b5a3c;--acc2:#f7f0e6;--line:#eadfd3;--ok:#3d8b5f;--bad:#c0504d;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:#fff}
+body{color:var(--ink);font-family:"Inter","Tajawal",-apple-system,sans-serif;font-size:15px}
+html[lang=ar] body{font-family:"Tajawal","Inter",-apple-system,sans-serif}
+#app{height:100%;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px;border-bottom:1px solid var(--line);flex:none}
+.brand{font-size:18px}
+.seg2{display:flex;gap:4px}
+.seg2 button,.lang{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.seg2 button.on{background:var(--bb);color:var(--bt);border-color:var(--bb);font-weight:700}
+.stage{flex:1;min-height:0;display:flex;justify-content:center;align-items:center}
+.phone{width:100%;max-width:430px;height:100%;display:flex;flex-direction:column;background:#fff;position:relative;overflow:hidden}
+.island,.sbar,.hind{display:none}
+@media (min-width:700px){
+.phone{width:390px;max-width:none;height:min(820px,100%);border:10px solid #111;border-radius:48px;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.island{display:block;position:absolute;top:10px;left:50%;transform:translateX(-50%);width:104px;height:28px;background:#111;border-radius:20px;z-index:10}
+.sbar{display:flex;justify-content:space-between;align-items:center;height:46px;padding:6px 28px 0;font-weight:600;font-size:14px;flex:none;direction:ltr}
+.hind{display:block;width:120px;height:5px;background:#111;border-radius:9px;margin:6px auto 8px;flex:none;opacity:.85}}
+.scroll{flex:1;overflow-y:auto;min-height:0}
+.pad{padding:14px 16px 22px}
+h1{font-size:24px;margin:4px 0 6px;letter-spacing:-.3px}h2{font-size:16px;margin:16px 0 8px}
+.sub{color:var(--mute);font-size:13px;margin:0 0 10px}.m0{margin:2px 0 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.g{justify-content:flex-start}
+.card{border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:10px;background:#fff}.click{cursor:pointer}
+.btn{background:var(--bb);color:var(--bt);border:0;border-radius:14px;padding:12px 16px;font-size:15px;font-weight:700;width:100%;cursor:pointer;font-family:inherit}
+.btn.sec{background:var(--bb2)}.btn.sm{width:auto;padding:7px 12px;font-size:13px}.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.bad{background:#f4d9d7;color:#8a2c28}
+a.btn{display:inline-block;text-align:center;text-decoration:none}
+.pill{display:inline-block;background:var(--acc2);color:var(--acc);border-radius:99px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.pill.ok{background:#dff3e7;color:var(--ok)}.pill.bad{background:#f8e0de;color:var(--bad)}
+.st{font-size:12px;font-weight:700;white-space:nowrap}.st.ok{color:var(--ok)}.st.bad{color:var(--bad)}
+.emo{font-size:26px;width:48px;height:48px;border-radius:14px;background:var(--acc2);display:flex;align-items:center;justify-content:center;flex:none}.emo.big{width:60px;height:60px;font-size:32px}
+input,textarea,select{width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:15px;margin:5px 0;font-family:inherit}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:8px 0 12px;padding-bottom:2px}
+.chips button,.seg button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:99px;padding:7px 13px;font-size:13px;cursor:pointer;white-space:nowrap;font-family:inherit}
+.chips button.on,.seg button.on{background:var(--bb);color:var(--bt);border-color:var(--bb);font-weight:700}
+.seg{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}.seg button{flex:1;border-radius:12px}
+.tabs{display:flex;border-top:1px solid var(--line);background:#fff;flex:none;padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs button{flex:1;background:none;border:0;color:var(--mute);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:inherit}
+.tabs button span{font-size:21px}.tabs button.on{color:var(--acc);font-weight:700}
+.cartbar{flex:none;margin:0 12px 8px;background:var(--bb);color:var(--bt);border-radius:16px;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:700;cursor:pointer}
+.ibtn{background:var(--acc2);border:0;border-radius:99px;width:38px;height:38px;font-size:18px;cursor:pointer;position:relative;color:var(--acc)}
+.dot{position:absolute;top:-3px;inset-inline-end:-3px;background:var(--bb);color:var(--bt);border-radius:99px;font-size:10px;padding:1px 6px}
+.back{background:none;border:0;color:var(--acc);font-size:15px;padding:4px 0;cursor:pointer;font-family:inherit}
+html[dir=rtl] .chev{display:inline-block;transform:scaleX(-1)}
+.hero{background:linear-gradient(135deg,#efe4d3,#dcc7a9);border-radius:22px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;margin:10px 0 12px;color:var(--bt)}
+.hero b{font-size:19px}.hero .big{font-size:42px}
+.qty{display:flex;align-items:center;gap:9px}.qty button{width:30px;height:30px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:17px;cursor:pointer}
+.empty{text-align:center;color:var(--mute);padding:26px 8px}
+.banner{background:#fbf1de;color:#7a5a1f;border-radius:12px;padding:10px 12px;font-size:13px;margin:8px 0}
+.banner.bad{background:#f8e0de;color:#8a2c28}.banner.ok{background:#dff3e7;color:#27633f}
+.tl{margin:10px 0}.tl div.s{display:flex;gap:10px;align-items:flex-start;padding:7px 0;color:var(--mute)}
+.tl i{width:18px;height:18px;border-radius:50%;border:2px solid var(--bb);flex:none;margin-top:2px}.tl .on{color:var(--ink);font-weight:700}.tl .on i{background:var(--ok);border-color:var(--ok)}
+.dots{display:flex;gap:5px;margin:8px 0;flex-wrap:wrap}.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--bb)}.dots i.on{background:var(--bb)}
+.gcard{position:relative;border-radius:22px;padding:22px 18px;overflow:hidden;text-align:center;color:#3a2a22;min-height:190px;margin:8px 0}
+.gcard .dec{position:absolute;font-size:38px;opacity:.22}.d1{top:8px;inset-inline-start:12px}.d2{bottom:10px;inset-inline-end:14px}.d3{top:48%;inset-inline-end:8px}
+.gem{font-size:54px}.gt{font-weight:800;font-size:18px;margin:4px 0}.gm{font-size:15px;line-height:1.6;white-space:pre-wrap}.gf{margin-top:10px;font-weight:700}
+.cpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.cpick button{border:2px solid transparent;border-radius:14px;padding:10px 4px;cursor:pointer;font-size:12px;font-family:inherit;color:#3a2a22}.cpick button.on{border-color:var(--bt)}
+.cpick button span{display:block;font-size:26px}
+.codebig{font-size:30px;letter-spacing:6px;font-weight:800;text-align:center;color:var(--acc);background:var(--acc2);border-radius:14px;padding:10px;margin:8px 0;direction:ltr}
+.qr{display:flex;justify-content:center;margin:10px 0}.qr canvas,.qr img{border:8px solid #fff;outline:1px solid var(--line);border-radius:6px}
+.stars{display:flex;gap:6px;justify-content:center;margin:8px 0}.stars button{background:none;border:0;font-size:30px;cursor:pointer;color:#d8c6a8}.stars button.on{color:#e0a526}
+.panel{flex:1;overflow-y:auto}.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}.tbl td,.tbl th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0}
+.stat{border:1px solid var(--line);border-radius:16px;padding:12px}.stat b{font-size:22px;display:block}
+.poster{border:2px dashed var(--bb);border-radius:20px;padding:26px;text-align:center;max-width:360px;margin:12px auto}
+.sw{display:flex;align-items:center;gap:8px;margin:6px 0}.sw input{width:auto;margin:0}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:99px;font-size:14px;z-index:50;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+@media print{body *{visibility:hidden}.poster,.poster *{visibility:visible}.poster{position:absolute;inset:0;border:0;margin:auto;height:max-content}}
+
+*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+.prof{display:flex;align-items:center;gap:14px}.avatar{width:58px;height:58px;border-radius:50%;background:var(--bb);color:var(--bt);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex:none}
+.stats3{display:flex;gap:8px;margin-bottom:6px}.stats3>div{flex:1;border:1px solid var(--line);border-radius:16px;padding:10px 4px;text-align:center;display:flex;flex-direction:column}.stats3 b{font-size:20px;color:var(--acc)}.stats3 span{font-size:11px;color:var(--mute)}
+.faq summary{cursor:pointer;list-style:none}.faq summary::-webkit-details-marker{display:none}
+.prof{display:flex;align-items:center;gap:14px;margin:6px 0 16px}.avatar{width:62px;height:62px;border-radius:20px;background:var(--bb);color:var(--bt);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;flex:none}
+.grp{border:1px solid var(--line);border-radius:22px;margin-bottom:14px;overflow:hidden;background:#fff}.mrow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}.mrow:last-child{border-bottom:0}.ico{width:44px;height:44px;border-radius:14px;background:var(--acc2);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.gl{color:var(--mute);font-size:14px;margin:6px 6px 8px}.btn.out{background:#c0504d;color:#fff;border-radius:99px;padding:15px;margin:4px 0 10px}
+.legal p{margin:2px 0 12px;font-size:14px;line-height:1.7}.faq summary{cursor:pointer;list-style:none}.faq summary::-webkit-details-marker{display:none}
+.gcard.cust{background-size:cover;background-position:center;color:#fff;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end}.gcard.cust .gt,.gcard.cust .gm,.gcard.cust .gf{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.cthumb.plus{background:var(--bb2);border:2px dashed var(--bb);color:var(--acc)}.cthumb.plus span{font-size:40px;font-weight:300}.cgrid .cthumb{width:auto;height:150px}.cthumb .lbl{background:rgba(255,255,255,.85);border-radius:99px;padding:2px 8px;margin-top:auto;margin-bottom:8px}.cthumb[style*=url]{justify-content:flex-end}
+.edwrap{position:fixed;inset:0;background:#fff;z-index:60;overflow-y:auto;display:flex;justify-content:center}.edin{width:100%;max-width:420px;padding:14px 16px 28px;display:flex;flex-direction:column;align-items:center;gap:10px}.edin>*{max-width:100%}.edin canvas{border-radius:18px;border:1px solid var(--line);background:#fff;cursor:grab}.edrow{display:flex;align-items:center;gap:10px;width:100%}.edrow input[type=range]{flex:1;padding:0;border:0;accent-color:#b99a74}.edin .chips{width:100%}.edin .row{width:100%}.edin .row .btn{flex:1}
+.onb{display:flex;align-items:center;gap:12px;text-align:start;padding:14px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.footbar{flex:none;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}.footbar.center{text-align:center}.btn.big{padding:14px 22px;border-radius:99px;font-size:16px}
+.fhead{flex:none;display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--line);background:#fff}
+.ib{width:34px;height:34px;border:0;background:var(--acc2);color:var(--acc);border-radius:99px;font-size:16px;cursor:pointer;flex:none}
+.ftabs{flex:1;display:flex;gap:4px}.ftab{flex:1;border:0;background:none;color:var(--mute);font-size:12px;padding:6px 2px;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:1px}.ftab span{font-size:17px}.ftab.on{color:var(--acc);font-weight:700;border-bottom-color:var(--bb)}
+.srch{width:100%;border-radius:99px!important;margin:6px 0 10px}
+.sechead{display:flex;align-items:center;justify-content:space-between;margin-top:14px}.sechead h2{margin:0}
+.seeall{background:none;border:0;color:var(--acc);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+.hrow{display:flex;gap:10px;overflow-x:auto;padding:8px 0 4px}
+.cthumb{flex:none;width:112px;height:134px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;color:#3b2b20;font-size:12px;font-weight:700}.cthumb span{font-size:34px}
+.tile{flex:none;width:140px;border:1px solid var(--line);border-radius:16px;padding:8px;background:#fff}.tile .tphoto{height:84px;border-radius:12px;background:var(--acc2);display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;margin-bottom:6px}.tile b{font-size:13px;display:block}.tile .pr{font-weight:700;margin:3px 0;font-size:13px}.tile .seeall{background:var(--bb);color:var(--bt);border-radius:99px;padding:6px 8px;width:100%;font-size:12px}
+.pshop{flex:none;width:88px;text-align:center;cursor:pointer;font-size:12px}.plogo{width:64px;height:64px;border-radius:50%;background:var(--acc2);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 4px;flex:none;font-weight:700;color:var(--acc)}.plogo.sm{width:46px;height:46px;font-size:22px;margin:0}
+.prow{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--line);cursor:pointer}.grow{flex:1;min-width:0}
+.chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--bt);flex:none}.chk.on{background:var(--bb);border-color:var(--bb)}
+.linkbtn{background:none;border:0;color:var(--acc);font-weight:700;font-size:14px;padding:10px 4px;cursor:pointer;font-family:inherit}
+.pad a:not(.btn){color:var(--acc);text-decoration:none;font-weight:500}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const TZ='Asia/Qatar',HR=3600e3,DAY=864e5;
+const BIZ=[];
+const NOB={id:'',type:'shop',e:'🎁',n:['Shop','محل'],area:['',''],cats:[['Items','الأصناف']],menu:[],hours:[0,24],phone:'',dist:0,rating:0,rc:0,isNew:false};
+const CARDS=[
+{id:'bday',e:'🎂',n:['Birthday','عيد ميلاد'],g:['#ffd6e0','#ffb3c6']},
+{id:'thx',e:'🙏',n:['Thank you','شكراً'],g:['#d8f3dc','#a8e0b8']},
+{id:'cong',e:'🎉',n:['Congrats','مبروك'],g:['#fff0b3','#ffd166']},
+{id:'enc',e:'💪',n:['Encouragement','تشجيع'],g:['#d0e8ff','#a2cdf7']},
+{id:'eid',e:'🌙',n:['Eid','عيد'],g:['#e5d9ff','#c4b0f5']},
+{id:'baby',e:'🍼',n:['New baby','مولود جديد'],g:['#ffe0cc','#ffc2a1']}];
+const ST={
+shop:[['Placed','تم الطلب'],['Accepted','تم القبول'],['Preparing','قيد التحضير'],['Ready','جاهز'],['Completed','مكتمل']],
+salon:[['Booked','تم الحجز'],['Confirmed','تم التأكيد'],['Checked in','تم الاستقبال'],['In service','قيد الخدمة'],['Completed','مكتمل']]};
+const GST=[['scheduled','Scheduled','مجدولة'],['sent','Sent','مرسلة'],['opened','Opened','مفتوحة'],['claimed','Claimed','تم استلامها'],['redeemed','Redeemed','تم صرفها'],['expired','Expired','منتهية']];
+
+const $=id=>document.getElementById(id);
+const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={view:'cust',lang:'ar',tab:'home',stack:[],q:'',filter:'all',cart:null,
+ cf:{mode:'pickup',car:'',plate:'',notes:'',slot:0},
+ uid:null,auth:null,ready:false,boot:false,recovery:false,me:{name:'',phone:''},canEdit:false,ext:{},mine:null,allShops:[],favRows:[],au:{step:'role',mode:'login',role:'customer',email:'',pw:'',name:'',phone:'',msg:'',ok:false,busy:false},
+ orders:{},gifts:{},notes:{},shops:{},favs:[],loaded:{},
+ meLoaded:false,reg:newReg(),rn:{},gf:null,sq:'',sflt:'',gcode:'',glist:'sent',rt:{n:0,c:''},rc:'',
+ shopId:'',shopTab:'orders',adminTab:'overview',nm:{en:'',ar:'',p:'',e:'🛍️',c:0},deep:null};
+const x=(e,a)=>S.lang==='ar'?a:e;
+const nm=a=>a[S.lang==='ar'?1:0];
+const bz=id=>BIZ.find(b=>b.id===id);
+const sh=id=>S.shops[id]||{};
+const money=n=>n+' '+x('QAR','ر.ق');
+const BASE=location.href.split('#')[0].split('?')[0];
+const curS=()=>S.stack[S.stack.length-1];
+let keepScroll=true,tt=0,pending=false;
+
+/* ---------- time helpers ---------- */
+const dohaHour=d=>(+new Intl.DateTimeFormat('en-GB',{timeZone:TZ,hour:'2-digit',hour12:false}).format(d||new Date()))%24;
+const hrs=b=>sh(b.id).hours||b.hours;
+const isOpen=b=>{const h=dohaHour(),r=hrs(b);return h>=r[0]&&h<r[1]};
+const loc=()=>S.lang==='ar'?'ar-QA-u-nu-latn':'en-GB';
+const fmtDT=ts=>new Date(ts).toLocaleString(loc(),{timeZone:TZ,weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'});
+const fmtD=ts=>new Date(ts).toLocaleDateString(loc(),{timeZone:TZ,day:'numeric',month:'short',year:'numeric'});
+const dayStart=ts=>Math.floor((ts+3*HR)/DAY)*DAY-3*HR;
+function slotsFor(b){const r=hrs(b),now=Date.now(),base=Math.ceil((now+1.5*HR)/HR)*HR,out=[];
+ for(let ts=base;ts<now+40*HR&&out.length<5;ts+=2*HR){const hh=dohaHour(new Date(ts));if(hh>=r[0]&&hh<r[1])out.push(ts)}return out}
+
+/* ---------- data helpers ---------- */
+const need=b=>+sh(b.id).stamps||8;
+const rewardOf=b=>x(sh(b.id).rEn||'A free item of your choice',sh(b.id).rAr||'عنصر مجاني من اختيارك');
+function stampsOf(b,uid){let n=0;
+ Object.values(S.orders).forEach(o=>{if(o.uid===uid&&o.biz===b.id&&o.status==='active'&&o.stage===4&&!o.giftCode)n++});
+ Object.values(S.gifts).forEach(g=>{if(g.claimer===uid&&g.biz===b.id&&g.status==='redeemed')n++});return n}
+const typeName=b=>b.type==='salon'?x('Salon','صالون'):x('Shop','متجر');
+const isFav=k=>S.favs.includes(k);
+const phKey=p=>String(p||'').replace(/\D/g,'').slice(-8);
+const isRecv=g=>g.claimer===S.uid||(!g.claimer&&phKey(S.me.phone).length===8&&phKey(g.toPhone)===phKey(S.me.phone));
+function gStatus(g){if(g.status==='redeemed')return 'redeemed';if(Date.now()>g.exp)return 'expired';if(g.sendAt&&Date.now()<g.sendAt)return 'scheduled';return g.status}
+const gLabel=s=>{const r=GST.find(a=>a[0]===s);return r?x(r[1],r[2]):s};
+const myNotes=()=>Object.values(S.notes).filter(n=>n.uid===S.uid).sort((a,b)=>b.ts-a.ts);
+const stLabel=o=>o.status==='cancelled'?x('Cancelled','ملغي'):o.status==='rejected'?x('Rejected','مرفوض'):nm(ST[(bz(o.biz)||NOB).type][o.stage]);
+const newId=p=>p+Date.now()+Math.floor(100+Math.random()*900);
+function code6(){let c;do{c=String(Math.floor(100000+Math.random()*900000))}while(S.gifts[c]);return c}
+const phoneIntl=p=>{const d=String(p).replace(/\D/g,'');return d.length===8?'974'+d:d};
+const giftLink=c=>BASE+'?gift='+c;
+
+/* ---------- init ---------- */
+function beep(){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=.15;o.start();setTimeout(()=>{o.stop();a.close()},350)}catch(e){}}
+function toast(t){let e=$('toast');if(!e){e=document.createElement('div');e.id='toast';document.body.appendChild(e)}e.textContent=t;e.className='show';clearTimeout(tt);tt=setTimeout(()=>{e.className=''},2200)}
+function applyLang(){document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='ar'?'rtl':'ltr'}
+function setLang(){S.lang=S.lang==='ar'?'en':'ar';try{localStorage.setItem('sarva_lang',S.lang)}catch(e){}applyLang();render()}
+function softRender(){const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&$('app')&&$('app').contains(a)){pending=true;return}render()}
+document.addEventListener('focusout',()=>{if(pending){pending=false;setTimeout(()=>{const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){pending=true;return}render()},350)}});
+
+/* ---------- navigation ---------- */
+function nav(){keepScroll=false}
+function push(s){nav();S.stack.push(s);render()}
+function back(){nav();S.stack.pop();render()}
+function tab(t){nav();S.tab=t;S.stack=[];render()}
+function setView(v){nav();S.view=v;render()}
+function openShop(id){push({t:'shop',id})}
+function openTrack(id){S.rt={n:0,c:''};push({t:'track',id})}
+/* ---------- render ---------- */
+function customer(){
+ const s=curS();let body,head='',foot='';
+ if(s)body=s.t==='shop'?vShop(s.id):s.t==='cart'?vCart():s.t==='track'?vTrack(s.id):s.t==='gf'?vGF():s.t==='gdetail'?vGiftDetail(s.code):s.t==='grecv'?vGiftRecv(s.code):s.t==='notes'?vNotes():s.t==='favs'?vFavs():s.t==='yg'?vYourGifts():s.t==='shops'?vPopular():s.t==='cards'?vCards():s.t==='reg'?`<div class="pad">${bk()}${vReg()}</div>`:s.t==='cprev'?vCardPrev(s.id):s.t==='pinfo'?vPinfo():s.t==='pset'?vPset():s.t==='stamps'?vStamps():s.t==='faq'?vFaq():s.t==='terms'?vTerms():s.t==='privacy'?vPrivacy():s.t==='fb'?vFb():'';
+ else body=S.tab==='home'?vHome():S.tab==='gifts'?vGifts():S.tab==='orders'?vOrders():vProfile();
+ if(body&&typeof body==='object'){head=body.head||'';foot=body.foot||'';body=body.body}
+ const inGF=!!(s&&s.t==='gf');
+ const cnt=S.cart?S.cart.lines.reduce((a,l)=>a+l.q,0):0;
+ const cb=cnt&&!(s&&(s.t==='cart'||s.t==='gf'))?`<div class="cartbar" onclick="push({t:'cart'})"><span>🛒 ${cnt} ${x('items','أصناف')}</span><span>${money(cartTotal())} · ${x('View cart','عرض السلة')}</span></div>`:'';
+ const tabs=[['home','🏠',x('Home','الرئيسية')],['gifts','🎁',x('Gifts','الهدايا')],['orders','📦',x('Orders','الطلبات')],['profile','👤',x('Profile','حسابي')]];
+ const time=new Date().toLocaleTimeString('en-GB',{timeZone:TZ,hour:'2-digit',minute:'2-digit'});
+ return `<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span>${time}</span><span>5G ▮▮▮</span></div>${head}<div class="scroll">${body}</div>${foot}${cb}${inGF?'':`<div class="tabs">${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="tab('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('')}</div>`}<div class="hind"></div></div></div>`}
+const bk=()=>`<button class="back" onclick="back()"><span class="chev">‹</span> ${x('Back','رجوع')}</button>`;
+
+/* ---------- home ---------- */
+function vHome(){
+ const unread=S.me.notif===false?0:myNotes().filter(n=>!n.read).length;
+ const seen=[],rec=[];Object.values(S.orders).filter(o=>o.uid===S.uid&&o.status!=='cancelled').sort((a,b)=>b.ts-a.ts).forEach(o=>{if(!seen.includes(o.biz)&&bz(o.biz)&&(sh(o.biz).status||'approved')==='approved'&&rec.length<3){seen.push(o.biz);rec.push(bz(o.biz))}});
+ const chips=[['all',x('All','الكل')],['salon',x('Salons','صوالين')],['shop',x('Shops','متاجر')],['open',x('Open now','مفتوح الآن')],['top',x('Top rated','الأعلى تقييماً')]];
+ return `<div class="pad"><div class="row"><div><div class="sub m0">${x('Welcome','أهلاً')}${S.me.name?', '+h(S.me.name):''}</div><h1>Sarva</h1></div><button class="ibtn" onclick="openNotes()">🔔${unread?`<b class="dot">${unread}</b>`:''}</button></div>
+ <div class="hero" onclick="startGift()"><div><b>${x('Send a gift','أرسل هدية')}</b><div class="sub m0" style="color:var(--bt)">${x('Gift a service or product from a local salon or shop','اهدِ خدمة أو منتج من صالون أو متجر')}</div></div><span class="big">🎁</span></div>
+ <input id="q" value="${h(S.q)}" placeholder="${x('Search salons, shops, items','ابحث عن صالون أو متجر أو منتج')}" oninput="S.q=this.value;$('shoplist').innerHTML=shopList()">
+ <div class="chips">${chips.map(c=>`<button class="${S.filter===c[0]?'on':''}" onclick="S.filter='${c[0]}';render()">${c[1]}</button>`).join('')}</div>
+ ${rec.length?`<h2>${x('Order again','اطلب مرة ثانية')}</h2>`+rec.map(b=>`<div class="card row click" onclick="openShop('${b.id}')"><div class="row g"><div class="emo">${b.e}</div><div><b>${h(nm(b.n))}</b><div class="sub m0">${stampsOf(b,S.uid)%need(b)}/${need(b)} ${x('stamps','أختام')} ${isOpen(b)?'':`· <span class="st bad">${x('Closed','مغلق')}</span>`}</div></div></div><span class="chev">›</span></div>`).join(''):''}
+ <h2>${x('Salons & shops','الصوالين والمتاجر')}</h2><div id="shoplist">${shopList()}</div></div>`}
+function shopList(){
+ const q=S.q.trim().toLowerCase();
+ let list=visibleShops().filter(b=>{
+  if(S.filter==='salon'&&b.type!=='salon')return false;if(S.filter==='shop'&&b.type!=='shop')return false;if(S.filter==='open'&&!isOpen(b))return false;
+  if(q){const hay=(b.n.join(' ')+' '+menuOf(b).map(m=>m.n.join(' ')).join(' ')).toLowerCase();if(!hay.includes(q))return false}return true});
+ if(S.filter==='top')list=list.slice().sort((a,b)=>ratingOf(b).avg-ratingOf(a).avg);
+ return list.length?list.map(shopCard).join(''):`<p class="empty">${x('No results','ما فيه نتائج')}</p>`}
+function statusPill(b){return sh(b.id).busy?`<span class="st bad">${x('Busy','مشغول')}</span>`:isOpen(b)?`<span class="st ok">${x('Open','مفتوح')}</span>`:`<span class="st bad">${x('Closed','مغلق')}</span>`}
+function shopCard(b){const r=ratingOf(b);
+ return `<div class="card row click" onclick="openShop('${b.id}')"><div class="row g"><div class="emo">${b.e}</div><div><b>${h(nm(b.n))}</b> <span class="pill">${typeName(b)}</span>${b.isNew?` <span class="pill ok">${x('New','جديد')}</span>`:''}<div class="sub m0">${rtxt(r)} · ${b.dist?b.dist+' '+x('km','كم')+' · ':''}${statusPill(b)}</div></div></div><span class="chev">›</span></div>`}
+
+/* ---------- shop page ---------- */
+function vShop(id){
+ if(!bz(id))return `<div class="pad">${bk()}<p class="empty">${x('This shop is not available','المحل غير متوفر')}</p></div>`;
+ const b=bz(id),open=isOpen(b),busy=!!sh(id).busy,can=open&&!busy,salon=b.type==='salon',menu=menuOf(b),r=ratingOf(b),hr=hrs(b);
+ const cats=b.cats.map((c,ci)=>{const its=menu.filter(m=>(m.c||0)===ci);if(!its.length)return'';
+  return `<h2>${h(nm(c))}</h2>`+its.map(m=>`<div class="card row"><div class="row g"><div class="emo">${m.e}</div><div><b>${h(nm(m.n))}</b><div class="sub m0">${money(m.p)}</div></div></div>
+  <div class="row" style="gap:6px"><button class="ibtn" onclick="toggleFav('i:${id}|${m.id}')">${isFav('i:'+id+'|'+m.id)?'♥':'♡'}</button>${m.off?`<span class="pill">${x('Unavailable','غير متوفر')}</span>`:`<button class="btn sm sec" onclick="startGift('${id}','${m.id}')">🎁</button><button class="btn sm" ${can?'':'disabled'} onclick="addCart('${id}','${m.id}')">${salon?x('Book','احجز'):x('Order','اطلب')}</button>`}</div></div>`).join('')}).join('');
+ return `<div class="pad"><div class="row">${bk()}<button class="ibtn" onclick="toggleFav('s:${id}')">${isFav('s:'+id)?'♥':'♡'}</button></div>
+ <div class="row g"><div class="emo big">${b.e}</div><div><h1>${h(nm(b.n))}</h1><div class="sub m0">${typeName(b)} · ${h(nm(b.area))} · ${rtxt(r)}</div><div class="sub m0">${hr[0]}:00 – ${hr[1]}:00 · ${statusPill(b)}</div></div></div>
+ ${busy?`<div class="banner bad">${x('This place is busy and not taking new orders right now.','المكان مشغول ولا يستقبل طلبات جديدة الحين.')}</div>`:!open?`<div class="banner">${x('Closed now. You can still send gifts.','مغلق الحين. تقدر ترسل هدايا.')}</div>`:''}
+ <button class="btn" style="margin-top:8px" onclick="startGift('${id}')">🎁 ${x('Send a gift from here','أرسل هدية من هنا')}</button>${cats}</div>`}
+/* ---------- cart & orders ---------- */
+const cartTotal=()=>{if(!S.cart)return 0;const m=menuOf(bz(S.cart.biz));return S.cart.lines.reduce((a,l)=>{const it=m.find(i=>i.id===l.id);return a+(it?it.p*l.q:0)},0)};
+function addCart(bid,iid){const b=bz(bid);if(!isOpen(b)||sh(bid).busy)return toast(x('Not taking orders right now','ما يستقبل طلبات الحين'));
+ if(S.cart&&S.cart.biz!==bid){S.cart=null;toast(x('Cart switched to ','تم تغيير السلة إلى ')+nm(b.n))}else toast('✓ '+x('Added','انضاف'));
+ if(!S.cart)S.cart={biz:bid,lines:[]};const l=S.cart.lines.find(l=>l.id===iid);l?l.q++:S.cart.lines.push({id:iid,q:1});render()}
+function cq(i,d){S.cart.lines[i].q+=d;if(S.cart.lines[i].q<=0)S.cart.lines.splice(i,1);if(!S.cart.lines.length){S.cart=null;nav();S.stack=[]}render()}
+function modeSeg(salon,b){
+ if(salon){const sl=slotsFor(b);if(!sl.includes(S.cf.slot))S.cf.slot=sl[0]||0;
+  return `<h2>${x('Pick a time','اختر الوقت')}</h2>`+(sl.length?`<div class="seg">${sl.map(t=>`<button class="${S.cf.slot===t?'on':''}" onclick="S.cf.slot=${t};render()">${fmtDT(t)}</button>`).join('')}</div>`:`<div class="banner">${x('No free slots soon','ما فيه مواعيد قريبة')}</div>`)}
+ return `<h2>${x('How do you want it?','كيف تبي تستلم؟')}</h2><div class="seg">${[['pickup',x('Pickup','استلام')],['curbside',x('Curbside','من السيارة')],['instore',x('In-store','داخل المتجر')]].map(m=>`<button class="${S.cf.mode===m[0]?'on':''}" onclick="S.cf.mode='${m[0]}';render()">${m[1]}</button>`).join('')}</div>`+
+  (S.cf.mode==='curbside'&&(S.cf.car=S.cf.car||S.me.car||'',S.cf.plate=S.cf.plate||S.me.plate||'',true)?`<input placeholder="${x('Car color','لون السيارة')}" value="${h(S.cf.car)}" oninput="S.cf.car=this.value"><input dir="ltr" placeholder="${x('Plate number','رقم اللوحة')}" value="${h(S.cf.plate)}" oninput="S.cf.plate=this.value">`:'')}
+function vCart(){
+ if(!S.cart||!S.cart.lines.length)return `<div class="pad">${bk()}<p class="empty">${x('Your cart is empty','السلة فاضية')}</p></div>`;
+ const b=bz(S.cart.biz),salon=b.type==='salon',menu=menuOf(b);
+ const lines=S.cart.lines.map((l,i)=>{const m=menu.find(m=>m.id===l.id);if(!m)return'';return `<div class="card row"><div><b>${m.e} ${h(nm(m.n))}</b><div class="sub m0">${money(m.p*l.q)}</div></div><div class="qty"><button onclick="cq(${i},-1)">−</button>${l.q}<button onclick="cq(${i},1)">+</button></div></div>`}).join('');
+ return `<div class="pad">${bk()}<h1>${x('Cart','السلة')}</h1><div class="sub">${h(nm(b.n))} · ${h(nm(b.area))}</div>${lines}${modeSeg(salon,b)}
+ <textarea rows="2" placeholder="${x('Notes (optional)','ملاحظات (اختياري)')}" oninput="S.cf.notes=this.value">${h(S.cf.notes)}</textarea>
+ <h2>${x('Payment','الدفع')}</h2><div class="seg"><button class="on">${salon?x('Pay at the salon','الدفع في الصالون'):x('Pay at pickup','الدفع عند الاستلام')}</button><button disabled style="opacity:.5">${x('Pay online (coming soon)','الدفع أونلاين (قريباً)')}</button></div>
+ <div class="card row"><b>${x('Total','المجموع')}</b><b>${money(cartTotal())}</b></div>
+ <button class="btn" onclick="placeOrder()">${salon?x('Confirm booking','تأكيد الحجز'):x('Place order','تأكيد الطلب')}</button></div>`}
+function vOrders(){
+ const all=Object.values(S.orders).filter(o=>o.uid===S.uid&&bz(o.biz)).sort((a,b)=>b.ts-a.ts);
+ const act=all.filter(o=>o.status==='active'&&o.stage<4),past=all.filter(o=>!(o.status==='active'&&o.stage<4));
+ return `<div class="pad"><h1>${x('Orders','الطلبات')}</h1>${!all.length?`<p class="empty">${x('No orders yet','ما فيه طلبات للحين')}</p>`:''}${act.length?`<h2>${x('Active','نشطة')}</h2>`+act.map(o=>orderRow(o,0)).join(''):''}${past.length?`<h2>${x('Past','السابقة')}</h2>`+past.map(o=>orderRow(o,1)).join(''):''}</div>`}
+function orderRow(o,past){const b=bz(o.biz);
+ return `<div class="card click" onclick="openTrack('${o.id}')"><div class="row"><b>${h(nm(b.n))} · #${o.num}</b><span class="pill ${o.status==='active'&&o.stage===4?'ok':o.status!=='active'?'bad':''}">${stLabel(o)}</span></div><div class="sub m0">${o.items.map(i=>i.q+'× '+h(nm(i.n))).join('، ')}</div>
+ <div class="row" style="margin-top:8px"><span class="sub m0">${o.giftCode?'🎁 ':''}${money(o.total)}</span>${past&&!o.giftCode?`<button class="btn sm sec" onclick="event.stopPropagation();reorder('${o.id}')">${x('Reorder','أعد الطلب')}</button>`:''}${past&&o.status==='active'&&!o.rating?`<span class="pill">⭐ ${x('Rate','قيّم')}</span>`:''}</div></div>`}
+function reorder(id){const o=S.orders[id],b=bz(o.biz),m=menuOf(b);const lines=o.items.filter(i=>m.find(z=>z.id===i.id&&!z.off)).map(i=>({id:i.id,q:i.q}));
+ if(!lines.length)return toast(x('Items unavailable','الأصناف غير متوفرة'));S.cart={biz:b.id,lines};push({t:'cart'})}
+function vTrack(id){
+ const o=S.orders[id];if(!o)return `<div class="pad">${bk()}<p class="empty">${x('Order not found','الطلب غير موجود')}</p></div>`;
+ const b=bz(o.biz),st=ST[b.type],hist=o.hist||[],dead=o.status!=='active';
+ const tl=st.map((s,i)=>{const hh=hist.find(z=>z.s===i);const on=!dead&&o.stage>=i;return `<div class="s ${on?'on':''}"><i></i><div>${nm(s)}${hh&&on?`<div class="sub m0">${fmtDT(hh.ts)}</div>`:''}</div></div>`}).join('');
+ const mode=o.mode==='appointment'?`📅 ${fmtDT(o.slot)}`:o.mode==='curbside'?`🚗 ${x('Curbside','من السيارة')} · ${h(o.carColor)} ${h(o.carPlate)}`:o.mode==='instore'?x('In-store','داخل المتجر'):x('Pickup','استلام');
+ const rate=!dead&&o.stage===4&&!o.rating?`<div class="card"><b>${x('How was it?','كيف كانت التجربة؟')}</b><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${S.rt.n>=n?'on':''}" onclick="S.rt.n=${n};render()">★</button>`).join('')}</div><textarea rows="2" placeholder="${x('Comment','تعليق')}" oninput="S.rt.c=this.value">${h(S.rt.c)}</textarea><button class="btn" onclick="submitRate('${id}')">${x('Send rating','أرسل التقييم')}</button></div>`:o.rating?`<div class="banner ok">★ ${o.rating} · ${x('Thanks for your rating','شكراً على تقييمك')}</div>`:'';
+ return `<div class="pad">${bk()}<h1>${x('Order tracking','تتبع الطلب')} #${o.num}</h1>
+ ${o.status==='cancelled'?`<div class="banner bad">${x('Cancelled','ملغي')}</div>`:o.status==='rejected'?`<div class="banner bad">${x('The shop could not accept this order.','المحل ما قدر يقبل الطلب.')}</div>`:''}
+ <div class="card"><div class="tl">${tl}</div>${o.eta&&!dead&&o.stage<4?`<div class="sub m0">⏱ ${x('Estimated time','الوقت المتوقع')}: ${h(o.eta)} ${x('min','دقيقة')}</div>`:''}</div>
+ <div class="card"><div class="row"><b>${b.e} ${h(nm(b.n))}</b><a class="btn sm sec" href="tel:${b.phone}">📞 ${x('Call','اتصل')}</a></div><div class="sub m0">${h(nm(b.area))}</div><div class="sub m0">${mode}${o.notes?' · '+h(o.notes):''}</div></div>
+ <div class="card">${o.items.map(i=>`<div class="row"><span>${i.e} ${h(nm(i.n))} × ${i.q}</span><span>${money(i.p*i.q)}</span></div>`).join('')}<div class="row" style="margin-top:8px"><b>${x('Total','المجموع')}</b><b>${o.giftCode?'🎁 '+x('Gift','هدية'):money(o.total)}</b></div></div>
+ ${rate}
+ ${!dead&&o.stage===0?`<button class="btn bad" onclick="cancelOrder('${id}')">${x('Cancel order','إلغاء الطلب')}</button><div class="sub" style="text-align:center;margin-top:6px">${x('You can cancel only before the shop accepts.','تقدر تلغي فقط قبل ما يقبل المحل.')}</div>`:''}</div>`}
+/* ---------- gifts ---------- */
+function cardHTML(cid,msg,from,img){
+ if(cid==='custom'){return `<div class="gcard cust" style="${img?`background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url(${img})`:'background:var(--bb2)'}"><div class="gt">${x('My card','بطاقتي')}</div><div class="gm">${h(msg||x('Your message appears here','رسالتك تظهر هنا'))}</div>${from?`<div class="gf">— ${h(from)}</div>`:''}</div>`}
+ const c=CARDS.find(c=>c.id===cid)||CARDS[0];
+ return `<div class="gcard" style="background:linear-gradient(135deg,${c.g[0]},${c.g[1]})"><span class="dec d1">${c.e}</span><span class="dec d2">${c.e}</span><span class="dec d3">${c.e}</span><div class="gem">${c.e}</div><div class="gt">${h(nm(c.n))}</div><div class="gm">${h(msg||x('Your message appears here','رسالتك تظهر هنا'))}</div>${from?`<div class="gf">— ${h(from)}</div>`:''}</div>`}
+const monthStart=()=>{const d=+new Intl.DateTimeFormat('en-GB',{timeZone:TZ,day:'numeric'}).format(new Date());return dayStart(Date.now())-(d-1)*DAY};
+function trending(){const cnt={};
+ Object.values(S.orders).forEach(o=>o.items.forEach(i=>{cnt[i.id]=(cnt[i.id]||0)+i.q}));Object.values(S.gifts).forEach(g=>g.items.forEach(i=>{cnt[i.id]=(cnt[i.id]||0)+i.q}));
+ const all=[];visibleShops().forEach(b=>menuOf(b).forEach((m,i)=>{if(!m.off)all.push({b,m,s:(cnt[m.id]||0)*10+(8-i)+b.rating})}));
+ return all.sort((a,c)=>c.s-a.s).slice(0,8)}
+function tile(b,m,label,fn){return `<div class="tile"><div class="tphoto" onclick="${fn}">${m.e}</div><b>${h(nm(m.n))}</b><div class="sub m0">${h(nm(b.n))}</div><div class="pr">${money(m.p)}</div><button class="seeall" onclick="${fn}">${label}</button></div>`}
+function popRow(fn){return `<div class="hrow">${visibleShops().slice().sort((a,c)=>ratingOf(c).avg-ratingOf(a).avg).map(b=>{const r=ratingOf(b);return `<div class="pshop" onclick="${fn}('${b.id}')"><div class="plogo">${b.e}</div><b>${h(nm(b.n))}</b><div class="sub m0">${rtxt(r)}</div></div>`}).join('')}</div>`}
+function giftRow(g,mode){const b=bz(g.biz)||NOB,st=gStatus(g);
+ return `<div class="card row click" onclick="${mode==='sent'?`push({t:'gdetail',code:'${g.code}'})`:`openRecv('${g.code}')`}"><div class="row g"><div class="emo">${(CARDS.find(c=>c.id===g.card)||CARDS[0]).e}</div><div><b>${h(nm(b.n))}</b><div class="sub m0">${g.items.map(i=>i.q+'× '+h(nm(i.n))).join('، ')}</div><div class="sub m0">${mode==='sent'?x('To ','إلى ')+h(g.toName):x('From ','من ')+h(g.fromName)}</div></div></div><span class="pill ${st==='redeemed'?'ok':st==='expired'?'bad':''}">${gLabel(st)}</span></div>`}
+function vGifts(){
+ const unread=S.me.notif===false?0:myNotes().filter(n=>!n.read).length,ms=monthStart();
+ const pend=Object.values(S.gifts).filter(g=>isRecv(g)&&g.from!==S.uid&&['sent','opened','claimed'].includes(gStatus(g))&&!Object.values(S.orders).some(o=>o.giftCode===g.code&&o.uid===S.uid)).sort((a,c)=>c.ts-a.ts);
+ const feed=Object.values(S.gifts).filter(g=>(g.from===S.uid||isRecv(g))&&g.ts>=ms).sort((a,c)=>c.ts-a.ts);
+ const body=`<div class="pad"><div class="row"><div class="row g"><span style="font-size:32px">🇶🇦</span><div><div class="sub m0">${x('Gifts in','الهدايا في')}</div><b style="font-size:20px">${x('Qatar','قطر')}</b></div></div><button class="ibtn" onclick="openNotes()">🔔${unread?`<b class="dot">${unread}</b>`:''}</button></div>
+ ${pend.length?`<h2>🎁 ${x('Gifts for you','هدايا لك')}</h2>${pend.map(g=>giftRow(g,'recv')).join('')}`:''}
+ <div class="card row click" style="margin-top:14px" onclick="push({t:'yg'})"><div class="row g"><span style="font-size:26px">🎁</span><b style="font-size:18px">${x('Your gifts','هداياك')}</b></div><span class="chev">›</span></div>
+ <div class="sechead"><h2>${x('Pick a card design','اختر تصميم البطاقة')}</h2><button class="seeall" onclick="push({t:'cards'})">${x('See all','عرض الكل')} <span class="chev">›</span></button></div>
+ <div class="hrow">${CARDS.map(c=>`<div class="cthumb" style="background:linear-gradient(135deg,${c.g[0]},${c.g[1]})" onclick="push({t:'cprev',id:'${c.id}'})"><span>${c.e}</span><small>${h(nm(c.n))}</small></div>`).join('')}${myCards().map(myThumb).join('')}${plusThumb()}</div>
+ <div class="sechead"><h2>${x('Trending Now','الأكثر طلباً')}</h2></div>
+ <div class="hrow">${trending().map(t=>tile(t.b,t.m,x('Send as a gift','أهدِ'),`startGift('${t.b.id}','${t.m.id}')`)).join('')}</div>
+ <div class="sechead"><h2>${x('Popular Shops','المحلات الشائعة')}</h2><button class="seeall" onclick="push({t:'shops'})">${x('See all','عرض الكل')} <span class="chev">›</span></button></div>${popRow('startGift')}
+ <h2>${x('Gift-feed','سجل الهدايا')}</h2>${feed.length?feed.map(g=>giftRow(g,g.from===S.uid?'sent':'recv')).join(''):`<div class="card empty"><div style="font-size:34px">🎁</div><b>${x('No gifts this month','ما فيه هدايا هذا الشهر')}</b><div class="sub">${x('Surprise someone','فاجئ أحد')}</div></div>`}
+ </div>`;
+ return {body,foot:`<div class="footbar center"><button class="btn big" onclick="startGift()">🎁 ${x('Send a gift','أرسل هدية')}</button></div>`}}
+function vCardPrev(id){if(id.startsWith('my:')){const mid=id.slice(3),c=myCards().find(z=>z.id===mid);if(!c)return `<div class="pad">${bk()}<p class="empty">${x('Card not found','البطاقة غير موجودة')}</p></div>`;return `<div class="pad">${bk()}<h1>${x('My card','بطاقتي')}</h1>${cardHTML('custom',x('Your message appears here','رسالتك تظهر هنا'),S.me.name,c.img)}<button class="btn" onclick="useMy('${mid}')">${x('Use this card','استخدم هذي البطاقة')}</button><button class="btn sec" style="margin-top:8px" onclick="editMy('${mid}')">✏️ ${x('Edit photo','عدّل الصورة')}</button><button class="btn bad" style="margin-top:8px" onclick="delMy('${mid}')">${x('Delete card','احذف البطاقة')}</button></div>`}
+ const c=CARDS.find(z=>z.id===id)||CARDS[0];return `<div class="pad">${bk()}<h1>${h(nm(c.n))}</h1>${cardHTML(id,x('Your message appears here','رسالتك تظهر هنا'),S.me.name)}<div class="sub" style="text-align:center">${x('You can write your own message later.','تقدر تكتب رسالتك بعدين.')}</div><button class="btn" onclick="S.stack.pop();startGift(0,0,'${id}')">${x('Use this card','استخدم هذي البطاقة')}</button></div>`}
+function vCards(){return `<div class="pad">${bk()}<h1>${x('Pick a card design','اختر تصميم البطاقة')}</h1><div class="sub">${x('Tap a design to start a gift with it','اضغط على تصميم عشان تشوفه')}</div><div class="cgrid">${CARDS.map(c=>`<div class="cthumb" style="background:linear-gradient(135deg,${c.g[0]},${c.g[1]});width:auto;height:150px" onclick="push({t:'cprev',id:'${c.id}'})"><span>${c.e}</span><small>${h(nm(c.n))}</small></div>`).join('')}${myCards().map(c=>myThumb(c).replace('class="cthumb"','class="cthumb" data-w="1"')).join('')}${plusThumb()}</div></div>`}
+function vYourGifts(){
+ const list=(S.glist==='sent'?Object.values(S.gifts).filter(g=>g.from===S.uid):Object.values(S.gifts).filter(isRecv)).sort((a,c)=>c.ts-a.ts);
+ return `<div class="pad">${bk()}<h1>${x('Your gifts','هداياك')}</h1>
+ <div class="seg"><button class="${S.glist==='sent'?'on':''}" onclick="S.glist='sent';render()">${x('Sent','المرسلة')}</button><button class="${S.glist==='recv'?'on':''}" onclick="S.glist='recv';render()">${x('Received','المستلمة')}</button></div>
+ ${list.length?list.map(g=>giftRow(g,S.glist)).join(''):`<p class="empty">${x('No gifts yet','ما فيه هدايا للحين')}</p>`}</div>`}
+function pSearch(fn){return `<input class="srch" placeholder="${x('Search for new shops','ابحث عن محلات جديدة')}" value="${h(S.sq)}" oninput="S.sq=this.value;$('plist').innerHTML=plist('${fn}')">`}
+function pChips(){return `<div class="chips">${[['top',x('Top rated','الأعلى تقييماً')],['fav',x('Favorites','المفضلة')],['new',x('New','جديد')],['open',x('Open now','مفتوح الآن')]].map(c=>`<button class="${S.sflt===c[0]?'on':''}" onclick="S.sflt=S.sflt==='${c[0]}'?'':'${c[0]}';render()">${c[1]}</button>`).join('')}</div>`}
+function plist(fn){const q=S.sq.trim().toLowerCase();
+ let l=visibleShops().filter(b=>{if(S.sflt==='fav'&&!isFav('s:'+b.id))return false;if(S.sflt==='new'&&!b.isNew)return false;if(S.sflt==='open'&&!isOpen(b))return false;if(q&&!b.n.join(' ').toLowerCase().includes(q))return false;return true});
+ if(S.sflt==='top')l=l.slice().sort((a,c)=>ratingOf(c).avg-ratingOf(a).avg);
+ return l.length?l.map(b=>{const r=ratingOf(b);return `<div class="prow" onclick="${fn}('${b.id}')"><div class="plogo sm">${b.e}</div><div class="grow"><b>${h(nm(b.n))}</b><div class="sub m0">${rtxt(r)}</div></div>${b.isNew?`<span class="pill ok">${x('New','جديد')}</span>`:''}</div>`}).join(''):`<p class="empty">${x('No results','ما فيه نتائج')}</p>`}
+function vPopular(){return `<div class="pad">${bk()}<h1>${x('Popular Shops','المحلات الشائعة')}</h1>${pSearch('startGift')}${pChips()}<div id="plist">${plist('startGift')}</div></div>`}
+
+/* ---------- send-a-gift flow (Recipient > Gift > Greeting card) ---------- */
+function startGift(bid,iid,card,img){nav();S.gf={step:1,sub:bid&&!iid?'shop':'main',shop:bid&&!iid?bid:'',shopFrom:'main',biz:bid&&iid?bid:'',lines:bid&&iid?{[iid]:1}:{},card:card||'bday',img:img||'',msg:'',toName:'',toPhone:'',when:'now',at:'',q:'',rq:'',newc:false};S.stack.push({t:'gf'});render()}
+const myCards=()=>S.me.cards||[];
+const myThumb=c=>`<div class="cthumb" style="background:url(${c.img}) center/cover" onclick="push({t:'cprev',id:'my:${c.id}'})"><small class="lbl">${x('My card','بطاقتي')}</small></div>`;
+const plusThumb=(st)=>`<div class="cthumb plus" style="${st||''}" onclick="addMyCard()"><span>＋</span><small>${x('Add your own','أضف بطاقتك')}</small></div>`;
+function readImg(f,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.9))};im.onerror=()=>toast(x('Could not read this image','ما قدرت أقرأ الصورة'));im.src=r.result};r.readAsDataURL(f)}
+/* ---------- photo editor ---------- */
+const EF=[['orig',['Original','أصلي'],{}],['vivid',['Vivid','زاهي'],{sat:1.35,con:1.08}],['warm',['Warm','دافئ'],{warm:1,sat:1.1}],['cool',['Cool','بارد'],{warm:-1}],['bw',['B&W','أبيض وأسود'],{gray:1,con:1.1}],['soft',['Soft','ناعم'],{con:.88,br:14,sat:.9}]];
+function openEditor(src,done){
+ const old=document.getElementById('ed');if(old)old.remove();
+ const im=new Image();
+ im.onerror=()=>toast(x('Could not read this image','ما قدرت أقرأ الصورة'));
+ im.onload=()=>{
+  const FW=Math.min(360,Math.max(240,(document.documentElement.clientWidth||360)-32)),FH=Math.round(FW*0.64);
+  const st={rot:0,flip:1,z:1,ox:0,oy:0,f:'orig',br:0};
+  const root=document.createElement('div');root.id='ed';root.className='edwrap';
+  root.innerHTML=`<div class="edin"><h2 style="margin:4px 0 2px">${x('Edit your card photo','عدّل صورة بطاقتك')}</h2><div class="sub">${x('Drag to move · pinch or use the slider to zoom','اسحب لتحريك الصورة · قرّب بالإصبعين أو بالشريط')}</div>
+  <canvas id="edc" width="${FW}" height="${FH}" style="width:${FW}px;height:${FH}px"></canvas>
+  <div class="edrow"><span>🔍</span><input id="edz" type="range" min="1" max="4" step="0.01" value="1"></div>
+  <div class="edrow"><span>☀️</span><input id="edb" type="range" min="-60" max="60" step="1" value="0"></div>
+  <div class="edrow" style="gap:8px"><button class="btn sec sm" id="edr">⟳ ${x('Rotate','تدوير')}</button><button class="btn sec sm" id="edfl">⇋ ${x('Flip','قلب')}</button><button class="btn sec sm" id="edrs">↺ ${x('Reset','إعادة')}</button></div>
+  <div class="chips" id="edf">${EF.map(f=>`<button data-f="${f[0]}" class="${f[0]==='orig'?'on':''}">${x(f[1][0],f[1][1])}</button>`).join('')}</div>
+  <div class="row" style="gap:8px;margin-top:6px"><button class="btn sec" id="edx">${x('Cancel','إلغاء')}</button><button class="btn" id="edok">${x('Save card','احفظ البطاقة')}</button></div></div>`;
+  document.body.appendChild(root);
+  const cv=root.querySelector('#edc'),ctx=cv.getContext('2d');
+  function geom(W,H){const sw=st.rot%2?im.height:im.width,sh=st.rot%2?im.width:im.height,sc=Math.max(W/sw,H/sh)*st.z;return {sw,sh,sc}}
+  function clamp(W,H){const g=geom(W,H),mx=Math.max(0,(g.sw*g.sc-W)/2),my=Math.max(0,(g.sh*g.sc-H)/2);st.ox=Math.max(-mx,Math.min(mx,st.ox));st.oy=Math.max(-my,Math.min(my,st.oy))}
+  function paint(c,W,H,k){const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,H);const gm=geom(W,H);
+   g.save();g.translate(W/2+st.ox*k,H/2+st.oy*k);g.rotate(st.rot*Math.PI/2);g.scale(st.flip*gm.sc,gm.sc);g.drawImage(im,-im.width/2,-im.height/2);g.restore();
+   const F=(EF.find(a=>a[0]===st.f)||EF[0])[2];if(!Object.keys(F).length&&!st.br)return;
+   try{const d=g.getImageData(0,0,W,H),p=d.data,con=F.con||1,sat=F.sat||1,gr=F.gray||0,wm=F.warm||0,b=(F.br||0)+st.br;
+    for(let i=0;i<p.length;i+=4){let r=p[i],gg=p[i+1],bb=p[i+2];
+     const l=.299*r+.587*gg+.114*bb;r=l+(r-l)*sat;gg=l+(gg-l)*sat;bb=l+(bb-l)*sat;
+     if(gr){r=gg=bb=l}
+     if(wm){r+=14*wm;bb-=14*wm}
+     r=(r-128)*con+128+b;gg=(gg-128)*con+128+b;bb=(bb-128)*con+128+b;
+     p[i]=r<0?0:r>255?255:r;p[i+1]=gg<0?0:gg>255?255:gg;p[i+2]=bb<0?0:bb>255?255:bb}
+    g.putImageData(d,0,0)}catch(e){}}
+  const draw=()=>{clamp(FW,FH);paint(cv,FW,FH,1)};
+  draw();
+  // pointer: drag + pinch
+  const ptr=new Map();let pd=0;
+  cv.style.touchAction='none';
+  cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);if(ptr.size===2){const a=[...ptr.values()];pd=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])}};
+  cv.onpointermove=e=>{if(!ptr.has(e.pointerId))return;const pv=ptr.get(e.pointerId);
+   if(ptr.size===1){st.ox+=e.clientX-pv[0];st.oy+=e.clientY-pv[1]}
+   ptr.set(e.pointerId,[e.clientX,e.clientY]);
+   if(ptr.size===2){const a=[...ptr.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pd){st.z=Math.max(1,Math.min(4,st.z*d/pd));root.querySelector('#edz').value=st.z}pd=d}
+   draw()};
+  cv.onpointerup=cv.onpointercancel=e=>{ptr.delete(e.pointerId);pd=0};
+  cv.onwheel=e=>{e.preventDefault();st.z=Math.max(1,Math.min(4,st.z*(e.deltaY<0?1.06:.94)));root.querySelector('#edz').value=st.z;draw()};
+  root.querySelector('#edz').oninput=e=>{st.z=+e.target.value;draw()};
+  root.querySelector('#edb').oninput=e=>{st.br=+e.target.value;draw()};
+  root.querySelector('#edr').onclick=()=>{st.rot=(st.rot+1)%4;st.ox=st.oy=0;draw()};
+  root.querySelector('#edfl').onclick=()=>{st.flip*=-1;draw()};
+  root.querySelector('#edrs').onclick=()=>{st.rot=0;st.flip=1;st.z=1;st.ox=st.oy=0;st.f='orig';st.br=0;root.querySelector('#edz').value=1;root.querySelector('#edb').value=0;root.querySelectorAll('#edf button').forEach(b=>b.className=b.dataset.f==='orig'?'on':'');draw()};
+  root.querySelectorAll('#edf button').forEach(b=>b.onclick=()=>{st.f=b.dataset.f;root.querySelectorAll('#edf button').forEach(z=>z.className=z===b?'on':'');draw()});
+  root.querySelector('#edx').onclick=()=>root.remove();
+  root.querySelector('#edok').onclick=()=>{const OW=624,OH=Math.round(OW*0.64),oc=document.createElement('canvas');oc.width=OW;oc.height=OH;
+   const k=OW/FW,sv={ox:st.ox,oy:st.oy};paint(oc,OW,OH,k);
+   let q=.78,d=oc.toDataURL('image/jpeg',q);while(d.length>70000&&q>.3){q-=.1;d=oc.toDataURL('image/jpeg',q)}
+   root.remove();done(d)};
+ };
+ im.src=src}
+
+function pickMy(id){const c=myCards().find(z=>z.id===id);if(!c)return;S.gf.card='custom';S.gf.img=c.img;render()}
+function useMy(id){const c=myCards().find(z=>z.id===id);if(!c)return;S.stack.pop();startGift(0,0,'custom',c.img)}
+function gfBack(){const g=S.gf;nav();
+ if(g.step===2&&g.sub==='shop')g.sub=g.shopFrom==='shops'?'shops':'main';else if(g.step===2&&g.sub==='shops')g.sub='main';else if(g.step>1)g.step--;else S.stack.pop();render()}
+function gfOpenShop(id){const g=S.gf;g.shopFrom=g.sub;g.sub='shop';g.shop=id;nav();render()}
+function gq(bid,iid,d){const g=S.gf;
+ if(d<0&&g.biz!==bid)return;
+ if(g.biz!==bid&&Object.keys(g.lines).length){g.lines={};toast(x('One shop per gift. Basket switched to ','هدية واحدة من محل واحد. تم تغيير السلة إلى ')+nm(bz(bid).n))}
+ g.biz=bid;g.lines[iid]=(g.lines[iid]||0)+d;if(g.lines[iid]<=0)delete g.lines[iid];if(!Object.keys(g.lines).length)g.biz='';render()}
+const gfItems=()=>{const g=S.gf;if(!g.biz)return[];const m=menuOf(bz(g.biz));return Object.entries(g.lines).map(([id,q])=>{const it=m.find(z=>z.id===id);return it?{id,n:it.n,p:it.p,e:it.e,q}:null}).filter(Boolean)};
+function gfErr(upTo){const g=S.gf;
+ if(upTo>=2){if(!g.toName.trim())return x('Select or add a recipient','اختر مستلم أو أضف واحد');if(String(g.toPhone).replace(/\D/g,'').length<8)return x('Enter a valid phone number','اكتب رقم جوال صحيح')}
+ if(upTo>=3&&!gfItems().length)return x('Pick at least one gift','اختر هدية واحدة على الأقل');
+ if(upTo>=4&&g.card==='custom'&&!g.img)return x('Add a photo for your card','أضف صورة لبطاقتك');
+ if(upTo>=4&&g.when==='later'&&(!g.at||isNaN(Date.parse(g.at))||Date.parse(g.at)<Date.now()))return x('Pick a future date and time','اختر تاريخ ووقت قادم');
+ return ''}
+function gfNext(){const e=gfErr(S.gf.step+1);if(e)return toast(e);S.gf.step++;nav();render()}
+function gfGo(n){const g=S.gf;if(n>g.step){const e=gfErr(n);if(e)return toast(e)}g.step=n;nav();render()}
+function recips(){const seen={},out=[];
+ Object.values(S.gifts).filter(g=>g.from===S.uid).sort((a,c)=>c.ts-a.ts).forEach(g=>{const k=String(g.toPhone).replace(/\D/g,'');if(!seen[k]){seen[k]=1;out.push({n:g.toName,p:g.toPhone})}});
+ const mp=String(S.me.phone||'').replace(/\D/g,'');if(mp&&!seen[mp])out.push({n:(S.me.name||x('Me','أنا'))+' ('+x('you','أنت')+')',p:S.me.phone});return out}
+function recList(){const g=S.gf,q=g.rq.trim().toLowerCase(),all=recips();
+ const rows=all.map((r,i)=>({r,i})).filter(o=>!q||o.r.n.toLowerCase().includes(q)||o.r.p.includes(q));
+ return rows.length?rows.map(o=>{const sel=g.toName===o.r.n&&g.toPhone===o.r.p;return `<div class="prow" onclick="pickRec(${o.i})"><div class="plogo sm">${h((o.r.n||'?')[0].toUpperCase())}</div><div class="grow"><b>${h(o.r.n)}</b><div class="sub m0" dir="ltr">${h(o.r.p)}</div></div><span class="chk ${sel?'on':''}">${sel?'✓':''}</span></div>`}).join(''):`<p class="empty">${x('No saved contacts yet','ما فيه جهات محفوظة للحين')}</p>`}
+function pickRec(i){const r=recips()[i];if(!r)return;S.gf.toName=r.n;S.gf.toPhone=r.p;S.gf.newc=false;render()}
+async function pickContacts(){try{if(navigator.contacts&&navigator.contacts.select){const c=await navigator.contacts.select(['name','tel'],{multiple:false});if(c&&c[0]){S.gf.toName=(c[0].name||[''])[0]||'';S.gf.toPhone=(c[0].tel||[''])[0]||'';S.gf.newc=true;render();return}}}catch(e){}
+ toast(x('Contacts access isn’t available here. Add the number manually.','الوصول لجهات الاتصال غير متاح هنا. اكتب الرقم يدوياً.'))}
+function gfRecipient(){const g=S.gf;
+ return `<h1>${x('Select recipient','اختر المستلم')}</h1><input class="srch" placeholder="${x('Type name or number to search...','اكتب الاسم أو الرقم للبحث...')}" value="${h(g.rq)}" oninput="S.gf.rq=this.value;$('rlist').innerHTML=recList()">
+ <button class="btn sec" style="border-radius:99px" onclick="pickContacts()">👤 ${x('Select from contacts','اختر من جهات الاتصال')}</button>
+ <button class="linkbtn" onclick="S.gf.newc=!S.gf.newc;render()">＋ ${x('New contact by phone number','جهة جديدة برقم الجوال')}</button>
+ ${g.newc?`<div class="card"><input placeholder="${x('Receiver name','اسم المستلم')}" value="${h(g.toName)}" oninput="S.gf.toName=this.value"><input dir="ltr" inputmode="tel" placeholder="${x('Phone (e.g. 5551 2345)','الجوال (مثال 55512345)')}" value="${h(g.toPhone)}" oninput="S.gf.toPhone=this.value"></div>`:''}
+ <h2>${x('Contacts','جهات الاتصال')}</h2><div id="rlist">${recList()}</div>`}
+function itemRow(b,m){const q=S.gf.lines[m.id]||0;
+ return `<div class="card row"><div class="row g"><div class="emo">${m.e}</div><div><b>${h(nm(m.n))}</b><div class="sub m0">${h(nm(b.n))} · ${money(m.p)}</div></div></div><div class="qty"><button onclick="gq('${b.id}','${m.id}',-1)">−</button>${q}<button onclick="gq('${b.id}','${m.id}',1)">+</button></div></div>`}
+function gRes(){const g=S.gf,q=g.q.trim().toLowerCase();
+ if(q){const rs=[];visibleShops().forEach(b=>menuOf(b).forEach(m=>{if(!m.off&&(b.n.join(' ')+' '+m.n.join(' ')).toLowerCase().includes(q))rs.push({b,m})}));return rs.length?rs.map(r=>itemRow(r.b,r.m)).join(''):`<p class="empty">${x('No results','ما فيه نتائج')}</p>`}
+ return `<div class="sechead"><h2>${x('Trending Now','الأكثر طلباً')}</h2></div><div class="hrow">${trending().map(t=>tile(t.b,t.m,x('Add to bag','أضف للسلة'),`gq('${t.b.id}','${t.m.id}',1)`)).join('')}</div>
+ <div class="sechead"><h2>${x('Popular Shops','المحلات الشائعة')}</h2><button class="seeall" onclick="S.gf.shopFrom='main';S.gf.sub='shops';nav();render()">${x('See all','عرض الكل')} <span class="chev">›</span></button></div>${popRow('gfOpenShop')}`}
+function gfGift(){const g=S.gf;
+ if(g.sub==='shops')return `<h1>${x('Popular Shops','المحلات الشائعة')}</h1>${pSearch('gfOpenShop')}${pChips()}<div id="plist">${plist('gfOpenShop')}</div>`;
+ if(g.sub==='shop'){const b=bz(g.shop),menu=menuOf(b).filter(m=>!m.off);
+  return `<div class="row g"><div class="plogo sm">${b.e}</div><div><h1 style="margin:0">${h(nm(b.n))}</h1><div class="sub m0">${h(nm(b.area))}</div></div></div><div class="sub" style="margin-top:8px">${x('One shop per gift','هدية واحدة من محل واحد')}</div>`+b.cats.map((c,ci)=>{const its=menu.filter(m=>(m.c||0)===ci);return its.length?`<h2>${h(nm(c))}</h2>`+its.map(m=>itemRow(b,m)).join(''):''}).join('')}
+ return `<h1>${x('Pick gifts','اختر الهدايا')}</h1><input class="srch" placeholder="${x('Search for shops or items...','ابحث عن محلات أو أصناف...')}" value="${h(g.q)}" oninput="S.gf.q=this.value;$('gres').innerHTML=gRes()"><div id="gres">${gRes()}</div>`}
+function gfCard(){const g=S.gf;
+ return `<h1>${x('Pick a card design','اختر تصميم البطاقة')}</h1><div class="cpick">${CARDS.map(c=>`<button class="${g.card===c.id?'on':''}" style="background:linear-gradient(135deg,${c.g[0]},${c.g[1]})" onclick="S.gf.card='${c.id}';S.gf.img='';render()"><span>${c.e}</span>${h(nm(c.n))}</button>`).join('')}${myCards().map(c=>`<button class="${g.card==='custom'&&g.img===c.img?'on':''}" style="background:url(${c.img}) center/cover;min-height:70px" onclick="pickMy('${c.id}')"></button>`).join('')}<button style="background:var(--bb2)" onclick="addMyCard()"><span>＋</span>${x('Add your own','أضف بطاقتك')}</button></div>
+ <div id="gprev">${cardHTML(g.card,g.msg,S.me.name,g.img)}</div><textarea rows="3" maxlength="240" placeholder="${x('Write a personal message','اكتب رسالة شخصية')}" oninput="S.gf.msg=this.value;$('gprev').innerHTML=cardHTML(S.gf.card,S.gf.msg,S.me.name,S.gf.img)">${h(g.msg)}</textarea>
+ <h2>${x('When?','متى؟')}</h2><div class="seg"><button class="${g.when==='now'?'on':''}" onclick="S.gf.when='now';render()">${x('Send now','أرسل الحين')}</button><button class="${g.when==='later'?'on':''}" onclick="S.gf.when='later';render()">${x('Schedule','جدولة')}</button></div>${g.when==='later'?`<input type="datetime-local" dir="ltr" value="${h(g.at)}" oninput="S.gf.at=this.value">`:''}`}
+function gfReview(){const g=S.gf,b=bz(g.biz),its=gfItems(),tot=its.reduce((a,i)=>a+i.p*i.q,0);
+ return `<h1>${x('Review and pay','راجع وادفع')}</h1>${cardHTML(g.card,g.msg,S.me.name,g.img)}<div class="card"><b>${b.e} ${h(nm(b.n))}</b>${its.map(i=>`<div class="row"><span>${i.e} ${h(nm(i.n))} × ${i.q}</span><span>${money(i.p*i.q)}</span></div>`).join('')}<div class="row" style="margin-top:8px"><b>${x('Total','المجموع')}</b><b>${money(tot)}</b></div></div><div class="card"><div>${x('To','إلى')}: <b>${h(g.toName)}</b> · <span dir="ltr">${h(g.toPhone)}</span></div><div class="sub m0">${g.when==='later'?x('Scheduled: ','مجدولة: ')+fmtDT(Date.parse(g.at)):x('Sends now','ترسل الحين')} · ${x('Valid for 60 days','صالحة ٦٠ يوم')}</div></div>`}
+function vGF(){
+ const g=S.gf,st=g.step,ti=st>=3?2:st-1,its=gfItems(),tot=its.reduce((a,i)=>a+i.p*i.q,0),n=its.reduce((a,i)=>a+i.q,0);
+ const tabs=[['👤',x('Recipient','المستلم')],['🎁',x('Gift','الهدية')],['💌',x('Greeting card','بطاقة التهنئة')]];
+ const head=`<div class="fhead">${st>1?`<button class="ib" onclick="gfBack()"><span class="chev">‹</span></button>`:`<span style="width:34px"></span>`}<div class="ftabs">${tabs.map((t,i)=>`<button class="ftab ${ti===i?'on':''}" onclick="gfGo(${i+1})"><span>${t[0]}</span>${t[1]}</button>`).join('')}</div><button class="ib" onclick="back()">✕</button></div>`;
+ let body,foot;
+ if(st===1){body=gfRecipient();foot=`<button class="btn" onclick="gfNext()">${x('Next','التالي')}</button>`}
+ else if(st===2){body=gfGift();foot=its.length?`<div class="row"><b>🎁 ${n} ${x('items','أصناف')} · ${money(tot)}</b><button class="btn sm" onclick="gfNext()">${x('Next','التالي')}</button></div>`:`<button class="btn" disabled>${x('Pick a gift to continue','اختر هدية للمتابعة')}</button>`}
+ else if(st===3){body=gfCard();foot=`<button class="btn" onclick="gfNext()">${x('Review','المراجعة')}</button>`}
+ else{body=gfReview();foot=`<button class="btn" onclick="payGift()">${x('Test payment','دفع تجريبي')} · ${money(tot)}</button><div class="sub" style="text-align:center;margin:6px 0 0">${x('No real money is charged in this version.','ما يتم خصم أي مبلغ حقيقي في هذي النسخة.')}</div>`}
+ return {head,body:`<div class="pad">${body}</div>`,foot:`<div class="footbar">${foot}</div>`}}
+function vGiftDetail(code){
+ const g=S.gifts[code];if(!g)return `<div class="pad">${bk()}<p class="empty">${x('Gift not found','الهدية غير موجودة')}</p></div>`;
+ const b=bz(g.biz)||NOB,st=gStatus(g),seq=['sent','opened','claimed','redeemed'],idx=seq.indexOf(g.status==='redeemed'?'redeemed':g.status);
+ const msg=x(`${g.fromName} sent you a gift from ${nm(b.n)} 🎁`,`${g.fromName} أرسل لك هدية من ${nm(b.n)} 🎁`)+`\n${giftLink(g.code)}\n${x('Gift code','كود الهدية')}: ${g.code}`;
+ return `<div class="pad">${bk()}<h1>${x('Your gift','هديتك')}</h1>${cardHTML(g.card,g.msg,g.fromName,g.img)}
+ <div class="card"><div class="row"><b>${b.e} ${h(nm(b.n))}</b><span class="pill ${st==='redeemed'?'ok':st==='expired'?'bad':''}">${gLabel(st)}</span></div>${g.items.map(i=>`<div class="sub m0">${i.e} ${h(nm(i.n))} × ${i.q}</div>`).join('')}<div class="sub m0">${x('To','إلى')}: ${h(g.toName)} · <span dir="ltr">${h(g.toPhone)}</span></div><div class="sub m0">${x('Valid until','صالحة حتى')} ${fmtD(g.exp)}</div></div>
+ ${st==='scheduled'?`<div class="banner">${x('Scheduled for ','مجدولة في ')}${fmtDT(g.sendAt)}</div>`:''}
+ <div class="card"><div class="tl">${seq.map((s,i)=>`<div class="s ${i<=idx?'on':''}"><i></i><div>${gLabel(s)}</div></div>`).join('')}</div>${g.thanks?`<div class="banner ok">💛 ${x('Thank you from ','شكراً من ')}${h(g.claimerName||g.toName)}</div>`:''}</div>
+ <div class="codebig">${g.code}</div>
+ <a class="btn" target="_blank" rel="noopener" href="https://wa.me/${phoneIntl(g.toPhone)}?text=${encodeURIComponent(msg)}">${x('Send via WhatsApp','أرسل عبر واتساب')}</a>
+ <button class="btn sec" style="margin-top:8px" onclick="copyText(${JSON.stringify(msg).replace(/"/g,'&quot;')})">${x('Copy message','انسخ الرسالة')}</button>
+ <button class="btn sec" style="margin-top:8px" onclick="openRecv('${g.code}')">${x('Preview as receiver (test)','معاينة كمستلم (تجربة)')}</button></div>`}
+function copyText(t){try{navigator.clipboard.writeText(t);toast(x('Copied','تم النسخ'))}catch(e){toast(x('Copy not available','النسخ غير متاح'))}}
+function vGiftRecv(code){
+ const g=S.gifts[code];if(!g)return `<div class="pad">${bk()}<p class="empty">${x('Gift not found. Check the code.','الهدية غير موجودة. تأكد من الكود.')}</p></div>`;
+ const b=bz(g.biz)||NOB,st=gStatus(g),mine=isRecv(g),go=Object.values(S.orders).find(o=>o.giftCode===code&&o.uid===S.uid);let act='';
+ const thank=mine&&!g.thanks?`<button class="btn sec" style="margin-top:8px" onclick="thankGift('${code}')">💛 ${x('Say thank you','قل شكراً')}</button>`:'';
+ if(st==='scheduled')act=`<div class="banner">${x('This gift will be available on ','هذي الهدية تتفعل في ')}${fmtDT(g.sendAt)}</div>`;
+ else if(st==='expired')act=`<div class="banner bad">${x('This gift has expired.','انتهت صلاحية الهدية.')}</div>`;
+ else if(st==='redeemed')act=`<div class="banner ok">✓ ${x('Redeemed','تم صرفها')}</div>${thank}`;
+ else if(st==='sent'||st==='opened')act=`<button class="btn" onclick="claimGift('${code}')">${x('Claim gift','استلم الهدية')}</button>`;
+ else if(!mine)act=`<div class="banner">${x('This gift was already claimed.','هذي الهدية انستلمت من قبل.')}</div>`;
+ else act=(go?`<div class="card row click" onclick="openTrack('${go.id}')"><span>📦 ${x('Your order','طلبك')} #${go.num}</span><span class="pill">${stLabel(go)}</span></div>`:`<h2>${x('Order your gift','اطلب هديتك')}</h2>${modeSeg(b.type==='salon',b)}<button class="btn" onclick="placeGiftOrder('${code}')">${b.type==='salon'?x('Book my appointment','احجز موعدي'):x('Order now','اطلب الحين')}</button>`)+`<div class="card" style="margin-top:12px"><div class="sub" style="text-align:center">${x('Or show this at the shop','أو وري هذا في المحل')}</div><div class="qr" data-qr="${g.code}" data-size="140"></div><div class="codebig">${g.code}</div></div>${thank}`;
+ return `<div class="pad">${bk()}<h1>${x('A gift for you','هدية لك')} 🎁</h1>${cardHTML(g.card,g.msg,g.fromName,g.img)}<div class="card"><b>${b.e} ${h(nm(b.n))}</b>${g.items.map(i=>`<div class="sub m0">${i.e} ${h(nm(i.n))} × ${i.q}</div>`).join('')}<div class="sub m0">${x('Valid until','صالحة حتى')} ${fmtD(g.exp)}</div></div>${act}</div>`}
+function vNotes(){const l=myNotes();return `<div class="pad">${bk()}<h1>${x('Notifications','الإشعارات')}</h1>${l.length?l.map(n=>`<div class="card"><div>${h(x(n.en,n.ar))}</div><div class="sub m0">${fmtDT(n.ts)}</div></div>`).join(''):`<p class="empty">${x('Nothing yet','ما فيه شي للحين')}</p>`}</div>`}
+
+/* ---------- profile ---------- */
+const mrow=(ic,t,sb,fn)=>`<div class="mrow" onclick="${fn}"><div class="ico">${ic}</div><div class="grow"><b>${t}</b>${sb?`<div class="sub m0">${sb}</div>`:''}</div><span class="chev">›</span></div>`;
+const subp=(t,inner)=>`<div class="pad">${bk()}<h1>${t}</h1>${inner}</div>`;
+function vProfile(){
+ const ini=(S.me.name||'').trim()?[...(S.me.name.trim())][0].toUpperCase():'👤';
+ return `<div class="pad"><h1>${x('Profile','حسابي')}</h1>
+ <div class="prof"><div class="avatar">${h(ini)}</div><div class="grow"><b style="font-size:19px">${h(S.me.name||x('Guest','ضيف'))}</b><div class="sub m0" dir="ltr" style="text-align:start">${h(S.me.phone||x('No phone added','ما أضفت رقم'))}</div></div></div>
+ <div class="grp">${mrow('🎁',x('Your gifts','هداياك'),'',"push({t:'yg'})")}${mrow('♥',x('Favorites','المفضلة'),'',"push({t:'favs'})")}${mrow('⭐',x('Stamp cards','بطاقات الأختام'),'',"push({t:'stamps'})")}</div>
+ <div class="gl">${x('Account settings','إعدادات الحساب')}</div>
+ <div class="grp">${mrow('👤',x('Personal information','معلوماتي الشخصية'),x('Name, phone, saved car','الاسم، الجوال، السيارة'),"push({t:'pinfo'})")}${(S.canEdit||S.me.role==='owner'||myApp())?mrow('🏪',myApp()?(myApp().status==='approved'?x('My business','محلي'):myApp().status==='pending'?x('My business (under review)','محلي (قيد المراجعة)'):x('Register my business','سجّل محلك')):x('I own a shop or salon','عندي محل أو صالون'),myApp()?'':x('Register and start receiving orders','سجّل واستقبل الطلبات'),"openBiz()"):''}${mrow('⚙️',x('General settings','الإعدادات العامة'),x('Language, notifications','اللغة، الإشعارات'),"push({t:'pset'})")}</div>
+ <div class="gl">${x('More','معلومات أخرى')}</div>
+ <div class="grp">${mrow('❓',x('Help','المساعدة'),'',"push({t:'faq'})")}${mrow('📄',x('Terms & conditions','الشروط والأحكام'),'',"push({t:'terms'})")}${mrow('🔒',x('Privacy policy','سياسة الخصوصية'),'',"push({t:'privacy'})")}${mrow('💬',x('Share your feedback','شاركنا رأيك'),'',"push({t:'fb'})")}</div>
+ <div class="grp"><div class="mrow" style="cursor:default"><div class="ico" style="background:var(--bb);font-weight:700;color:var(--bt)">S</div><div class="grow"><b>Sarva</b><div class="sub m0">${x('Version','الإصدار')} 1.0.0</div></div></div></div>
+ <button class="btn out" onclick="signOut()">↩ ${x('Sign out','تسجيل الخروج')}</button></div>`}
+function vPinfo(){return subp(x('Personal information','معلوماتي الشخصية'),`<div class="card"><label class="sub">${x('Name','الاسم')}</label><input placeholder="${x('Your name','اسمك')}" value="${h(S.me.name)}" onchange="S.me.name=this.value.trim();${SV()}"><label class="sub">${x('Phone','الجوال')}</label><input dir="ltr" inputmode="tel" placeholder="55512345" value="${h(S.me.phone)}" onchange="S.me.phone=this.value.trim();${SV()}"></div>
+ <h2>🚗 ${x('Saved car (curbside pickup)','سيارتي (للاستلام من السيارة)')}</h2><div class="card"><input placeholder="${x('Car color','لون السيارة')}" value="${h(S.me.car||'')}" onchange="S.me.car=this.value.trim();${SV()}"><input dir="ltr" placeholder="${x('Plate number','رقم اللوحة')}" value="${h(S.me.plate||'')}" onchange="S.me.plate=this.value.trim();${SV()}"><div class="sub m0">${x('Filled in automatically when you choose curbside.','تتعبى تلقائي لما تختار الاستلام من السيارة.')}</div></div>
+ <div class="sub" dir="ltr" style="text-align:start">${h((S.auth&&S.auth.email)||'')}</div>`)}
+function vPset(){return subp(x('General settings','الإعدادات العامة'),`<h2>${x('Language','اللغة')}</h2><div class="seg"><button class="${S.lang==='ar'?'on':''}" onclick="S.lang==='ar'||setLang()">العربية</button><button class="${S.lang==='en'?'on':''}" onclick="S.lang==='en'||setLang()">English</button></div>
+ <h2>${x('Notifications','الإشعارات')}</h2><div class="card row"><span>🔔 ${x('In-app notifications','الإشعارات داخل التطبيق')}</span><input type="checkbox" style="width:auto" ${S.me.notif===false?'':'checked'} onchange="S.me.notif=this.checked;${SV()};render()"></div>
+ <div class="grp">${mrow('🔔',x('Notification list','قائمة الإشعارات'),'',"openNotes()")}</div>`)}
+function vStamps(){const L=visibleShops().filter(b=>stampsOf(b,S.uid)>0);return subp(x('Stamp cards','بطاقات الأختام'),!L.length?`<p class="empty">${x('No stamps yet. Order from a shop to start collecting.','ما عندك أختام للحين. اطلب من أي محل وابدأ تجمع.')}</p>`:L.map(b=>{const n=need(b),s=stampsOf(b,S.uid),cur=s%n,earned=Math.floor(s/n);return `<div class="card"><div class="row"><b>${b.e} ${h(nm(b.n))}</b><span class="pill">${cur}/${n}</span></div><div class="dots">${Array.from({length:n},(_,i)=>`<i class="${i<cur?'on':''}"></i>`).join('')}</div><div class="sub m0">${earned?`🎉 ${x('Rewards available','مكافآت متاحة')}: ${earned} · `:''}${h(rewardOf(b))}</div></div>`}).join(''))}
+function vFaq(){const faq=[[x('How do I pick up my order?','كيف أستلم طلبي؟'),x('When your order is Ready, go to the shop and show the order number. For curbside, tell us your car color and plate.','إذا صار طلبك جاهز روح للمحل وأعطهم رقم الطلب. للاستلام من السيارة اكتب لون السيارة ورقم اللوحة.')],
+ [x('How do gifts work?','كيف تشتغل الهدايا؟'),x('Gifts are items or services from one shop. The receiver gets a 6-digit code (valid 60 days) and shows it or its QR at the shop.','الهدية صنف أو خدمة من محل واحد. المستلم ياخذ كود من ٦ أرقام (صالح ٦٠ يوم) ويعرضه أو يعرض الـ QR في المحل.')],
+ [x('Is there delivery?','فيه توصيل؟'),x('No. Orders are pickup, curbside or in-store, and salons use appointments.','لا. الطلبات استلام أو من السيارة أو داخل المتجر، والصوالين بمواعيد.')],
+ [x('Are payments real?','الدفع حقيقي؟'),x('Not yet. Payment is a test in this version and no money is charged.','للحين لا. الدفع تجريبي في هذي النسخة وما يتم خصم أي مبلغ.')]];
+ return subp(x('Help','المساعدة'),faq.map(f=>`<details class="card faq"><summary><b>${f[0]}</b></summary><div class="sub" style="margin-top:8px">${f[1]}</div></details>`).join(''))}
+function vTerms(){return subp(x('Terms & conditions','الشروط والأحكام'),`<div class="card legal">${[
+ [x('Orders','الطلبات'),x('Orders are for pickup, curbside or in-store only. Each shop prepares and is responsible for its own orders.','الطلبات للاستلام أو من السيارة أو داخل المتجر فقط. كل محل مسؤول عن تجهيز طلباته.')],
+ [x('Gifts','الهدايا'),x('Gifts are items or services from one shop, not money or credit. A gift is valid for 60 days from sending and is redeemed once with its code.','الهدية أصناف أو خدمات من محل واحد، مو فلوس ولا رصيد. صالحة ٦٠ يوم من الإرسال وتُصرف مرة وحدة بالكود.')],
+ [x('Payments','الدفع'),x('Payment in this version is a test and no real money is charged.','الدفع في هذي النسخة تجريبي وما يتم خصم أي مبلغ حقيقي.')],
+ [x('Cancellation','الإلغاء'),x('You can cancel an order before the shop starts preparing it.','تقدر تلغي الطلب قبل ما يبدأ المحل بتجهيزه.')]].map(r=>`<b>${r[0]}</b><p>${r[1]}</p>`).join('')}<div class="sub m0">${x('This is a draft. Final terms will be added before launch.','هذي مسودة. تنضاف الشروط النهائية قبل الإطلاق.')}</div></div>`)}
+function vPrivacy(){return subp(x('Privacy policy','سياسة الخصوصية'),`<div class="card legal">${[
+ [x('What we keep','وش نحفظ'),x('Your name, phone, saved car, orders, gifts and favorites, so the app can work.','اسمك وجوالك وسيارتك وطلباتك وهداياك ومفضلتك عشان التطبيق يشتغل.')],
+ [x('Who can see it','مين يشوفها'),x('Shops see only the orders and gifts made with them. Admins can see all orders and gifts.','المحلات تشوف فقط الطلبات والهدايا الخاصة فيها. الإدارة تشوف كل الطلبات والهدايا.')],
+ [x('Your control','تحكمك'),x('You can edit your details any time from your profile.','تقدر تعدل بياناتك في أي وقت من حسابك.')]].map(r=>`<b>${r[0]}</b><p>${r[1]}</p>`).join('')}<div class="sub m0">${x('This is a draft. The final policy will be added before launch.','هذي مسودة. تنضاف السياسة النهائية قبل الإطلاق.')}</div></div>`)}
+function vFb(){return subp(x('Share your feedback','شاركنا رأيك'),`<div class="card"><textarea id="fbt" rows="5" placeholder="${x('Tell us what you think','قل لنا رأيك')}"></textarea></div><button class="btn" onclick="sendFb()">${x('Send','إرسال')}</button>`)}
+function vFavs(){
+ const shops=S.favs.filter(k=>k[0]==='s').map(k=>bz(k.slice(2))).filter(Boolean),items=S.favs.filter(k=>k[0]==='i').map(k=>{const [bid,iid]=k.slice(2).split('|'),b=bz(bid);if(!b)return null;const m=menuOf(b).find(z=>z.id===iid);return m?{b,m}:null}).filter(Boolean);
+ return `<div class="pad">${bk()}<h1>${x('Favorites','المفضلة')}</h1>${!shops.length&&!items.length?`<p class="empty">${x('Nothing saved yet','ما فيه شي محفوظ')}</p>`:''}${shops.map(shopCard).join('')}${items.map(i=>`<div class="card row click" onclick="openShop('${i.b.id}')"><div class="row g"><div class="emo">${i.m.e}</div><div><b>${h(nm(i.m.n))}</b><div class="sub m0">${h(nm(i.b.n))} · ${money(i.m.p)}</div></div></div><span class="chev">›</span></div>`).join('')}</div>`}
+
+/* ---------- shop dashboard ---------- */
+function shopDash(){
+ const b=bz(S.shopId)||BIZ[0];if(!b)return '<div class="panel"><div class="wrap"><p class="empty">—</p></div></div>';S.shopId=b.id;const tabs=[['orders',x('Orders','الطلبات')],['gifts',x('Gifts','الهدايا')],['menu',x('Menu','القائمة')],['settings',x('Settings','الإعدادات')],['stats',x('Stats','الإحصائيات')],['qr','QR']];
+ let body='';
+ if(S.shopTab==='orders')body=dOrders(b);if(S.shopTab==='gifts')body=dGifts(b);if(S.shopTab==='menu')body=dMenu(b);if(S.shopTab==='settings')body=dSettings(b);if(S.shopTab==='stats')body=dStats(b);if(S.shopTab==='qr')body=dQR(b);
+ return `<div class="panel"><div class="wrap"><div class="row"><h1>${b.e} ${h(nm(b.n))}</h1>${S.canEdit?`<select style="width:auto" onchange="S.shopId=this.value;render()">${BIZ.map(s=>`<option value="${s.id}" ${s.id===S.shopId?'selected':''}>${h(nm(s.n))}</option>`).join('')}</select>`:''}</div>
+ <div class="chips">${tabs.map(t=>`<button class="${S.shopTab===t[0]?'on':''}" onclick="S.shopTab='${t[0]}';nav();render()">${t[1]}</button>`).join('')}</div>${body}</div></div>`}
+function dOrders(b){
+ const os=Object.values(S.orders).filter(o=>o.biz===b.id).sort((a,c)=>c.ts-a.ts),act=os.filter(o=>o.status==='active'&&o.stage<4),done=os.filter(o=>!(o.status==='active'&&o.stage<4)).slice(0,15);
+ const card=o=>{const st=ST[b.type],live=o.status==='active'&&o.stage<4;
+  return `<div class="card"><div class="row"><b>#${o.num} · ${h(o.uname)} ${o.giftCode?'🎁 '+x('Gift','هدية'):''}</b><span class="pill ${o.status!=='active'?'bad':o.stage===4?'ok':''}">${stLabel(o)}</span></div>
+  <div class="sub m0">${o.items.map(i=>i.q+'× '+h(nm(i.n))).join('، ')} · ${o.giftCode?'🎁':money(o.total)}</div>
+  <div class="sub m0">${o.mode==='appointment'?'📅 '+fmtDT(o.slot):o.mode==='curbside'?'🚗 '+h(o.carColor)+' '+h(o.carPlate):o.mode==='instore'?x('In-store','داخل المتجر'):x('Pickup','استلام')}${o.notes?' · 📝 '+h(o.notes):''}</div>
+  ${live?`<div class="row" style="margin-top:8px"><input style="width:110px" dir="ltr" inputmode="numeric" placeholder="${x('ETA min','الوقت بالدقائق')}" value="${h(o.eta||'')}" onchange="setEta('${o.id}',this.value)">${o.stage===0?`<div class="row" style="gap:6px"><button class="btn sm bad" onclick="rejectO('${o.id}')">${x('Reject','رفض')}</button><button class="btn sm" onclick="advance('${o.id}')">${x('Accept','قبول')}</button></div>`:`<button class="btn sm" onclick="advance('${o.id}')">${x('Mark: ','تحديث: ')}${nm(st[o.stage+1])}</button>`}</div>`:''}</div>`};
+ return `<h2>${x('Live orders','الطلبات الحالية')}</h2>${act.length?act.map(card).join(''):`<p class="empty">${x('No active orders','ما فيه طلبات نشطة')}</p>`}<h2>${x('Recent','الأخيرة')}</h2>${done.map(card).join('')||`<p class="empty">—</p>`}`}
+const nm0=b=>b.n[0],nm1=b=>b.n[1];
+function dGifts(b){
+ const gs=Object.values(S.gifts).filter(g=>g.biz===b.id).sort((a,c)=>c.ts-a.ts),wait=gs.filter(g=>!['redeemed','expired'].includes(gStatus(g))),red=gs.filter(g=>g.status==='redeemed');
+ const row=g=>`<div class="card row"><div><b>${g.items.map(i=>i.q+'× '+h(nm(i.n))).join('، ')}</b><div class="sub m0">${h(g.fromName)} → ${h(g.toName)} · <span dir="ltr">${g.code}</span></div></div><span class="pill ${g.status==='redeemed'?'ok':''}">${gLabel(gStatus(g))}</span></div>`;
+ return `<div class="card"><b>${x('Redeem a gift','صرف هدية')}</b><div class="row"><input dir="ltr" inputmode="numeric" maxlength="6" placeholder="${x('6-digit code','الكود (٦ أرقام)')}" value="${h(S.rc)}" oninput="S.rc=this.value"><button class="btn sm" onclick="redeemCode()">${x('Redeem','صرف')}</button></div><div class="sub m0">${x('The receiver shows a QR and a 6-digit code. Type the code here.','المستلم يوري QR وكود من ٦ أرقام. اكتب الكود هنا.')}</div></div>
+ <h2>${x('Waiting to be redeemed','بانتظار الصرف')}</h2>${wait.map(row).join('')||`<p class="empty">—</p>`}<h2>${x('Redeemed','تم صرفها')}</h2>${red.map(row).join('')||`<p class="empty">—</p>`}`}
+function dMenu(b){
+ return menuOf(b).map(m=>`<div class="card row"><div><b>${m.e} ${h(nm(m.n))}</b><div class="sub m0">${money(m.p)} · ${h(nm(b.cats[m.c||0]))}</div></div><div class="row" style="gap:8px"><label class="sw"><input type="checkbox" ${m.off?'':'checked'} onchange="toggleOff('${m.id}')"> ${x('Available','متوفر')}</label>${m.x?`<button class="btn sm bad" onclick="delExtra('${m.id}')">✕</button>`:''}</div></div>`).join('')+
+ `<h2>${x('Add an item','إضافة صنف')}</h2><div class="card"><input placeholder="${x('Name (English)','الاسم (إنجليزي)')}" value="${h(S.nm.en)}" oninput="S.nm.en=this.value"><input placeholder="${x('Name (Arabic)','الاسم (عربي)')}" value="${h(S.nm.ar)}" oninput="S.nm.ar=this.value"><div class="row"><input dir="ltr" inputmode="numeric" placeholder="${x('Price (QAR)','السعر (ر.ق)')}" value="${h(S.nm.p)}" oninput="S.nm.p=this.value"><input style="width:80px" placeholder="🛍️" value="${h(S.nm.e)}" oninput="S.nm.e=this.value"></div><select onchange="S.nm.c=this.value">${b.cats.map((c,i)=>`<option value="${i}" ${+S.nm.c===i?'selected':''}>${h(nm(c))}</option>`).join('')}</select><button class="btn" onclick="addExtra()">${x('Add','إضافة')}</button></div>`}
+function dSettings(b){const s=sh(b.id),r=hrs(b);
+ return `<div class="card"><label class="sw"><input type="checkbox" ${s.busy?'checked':''} onchange="putShop('${b.id}',{busy:this.checked})"> <b>${x('Busy mode (pause new orders)','وضع الانشغال (إيقاف الطلبات الجديدة)')}</b></label></div>
+ <div class="card"><b>${x('Opening hours','ساعات العمل')}</b><div class="row"><input type="number" dir="ltr" min="0" max="23" value="${r[0]}" onchange="putShop('${b.id}',{hours:[+this.value,${r[1]}]})"><input type="number" dir="ltr" min="1" max="24" value="${r[1]}" onchange="putShop('${b.id}',{hours:[${r[0]},+this.value]})"></div><div class="sub m0">${x('Doha time, 24-hour','بتوقيت الدوحة، ٢٤ ساعة')}</div></div>
+ <div class="card"><b>${x('Loyalty','الولاء')}</b><input type="number" dir="ltr" min="2" max="20" value="${need(b)}" onchange="putShop('${b.id}',{stamps:+this.value})"><div class="sub m0">${x('Stamps needed for a reward','عدد الأختام للمكافأة')}</div><input placeholder="${x('Reward (English)','المكافأة (إنجليزي)')}" value="${h(s.rEn||'')}" onchange="putShop('${b.id}',{rEn:this.value})"><input placeholder="${x('Reward (Arabic)','المكافأة (عربي)')}" value="${h(s.rAr||'')}" onchange="putShop('${b.id}',{rAr:this.value})"></div>
+ <div class="sub">${x('Name, logo and cover editing will come later.','تعديل الاسم والشعار والغلاف راح يجي لاحقاً.')}</div>`}
+function dStats(b){
+ const os=Object.values(S.orders).filter(o=>o.biz===b.id),t0=dayStart(Date.now()),w0=Date.now()-7*DAY,done=os.filter(o=>o.status==='active'&&o.stage===4),cnt={},byU={};
+ done.forEach(o=>{o.items.forEach(i=>{const k=nm(i.n);cnt[k]=(cnt[k]||0)+i.q});byU[o.uid]=(byU[o.uid]||0)+1});
+ const top=Object.entries(cnt).sort((a,c)=>c[1]-a[1]).slice(0,5),gs=Object.values(S.gifts).filter(g=>g.biz===b.id),r=ratingOf(b);
+ const sales=done.reduce((a,o)=>a+o.total,0)+gs.filter(g=>g.status==='redeemed').reduce((a,g)=>a+g.total,0);
+ const box=(l,v)=>`<div class="stat"><b>${v}</b>${l}</div>`;
+ return `<div class="grid">${box(x('Orders today','طلبات اليوم'),os.filter(o=>o.ts>=t0).length)}${box(x('Orders this week','طلبات الأسبوع'),os.filter(o=>o.ts>=w0).length)}${box(x('Gifts sent','هدايا مرسلة'),gs.length)}${box(x('Gifts redeemed','هدايا مصروفة'),gs.filter(g=>g.status==='redeemed').length)}${box(x('Total sales','إجمالي المبيعات'),money(sales))}${box(x('Repeat customers','عملاء متكررون'),Object.values(byU).filter(n=>n>1).length)}${box(x('Average rating','متوسط التقييم'),'★ '+r.avg.toFixed(1))}</div>
+ <h2>${x('Top 5 items','أكثر ٥ أصناف')}</h2>${top.length?top.map(t=>`<div class="card row"><span>${h(t[0])}</span><b>${t[1]}</b></div>`).join(''):`<p class="empty">—</p>`}`}
+function dQR(b){return `<div class="poster"><div style="font-size:54px">${b.e}</div><h1>${h(nm(b.n))}</h1><div class="sub">${x('Scan to order or send a gift','امسح للطلب أو لإرسال هدية')}</div><div class="qr" data-qr="${BASE}?shop=${b.id}" data-size="180"></div><div class="sub">Sarva</div></div><div style="text-align:center"><button class="btn sm" onclick="try{window.print()}catch(e){}">${x('Print poster','اطبع الملصق')}</button></div>`}
+
+/* ---------- admin ---------- */
+
+/* ---------- business owners: onboarding, registration, approval ---------- */
+function vOnb(){return `<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span></span><span></span></div><div class="scroll"><div class="pad" style="text-align:center;padding-top:28px"><div class="avatar" style="margin:0 auto 12px;width:72px;height:72px;font-size:32px">S</div><h1>${x('Welcome to Sarva','أهلاً في سارفا')}</h1><div class="sub">${x('How will you use Sarva?','كيف بتستخدم سارفا؟')}</div>
+ <div class="card click onb" onclick="chooseRole('customer')"><div class="ico">🛍️</div><div class="grow" style="text-align:start"><b>${x('I am a customer','أنا عميل')}</b><div class="sub m0">${x('Order, book and send gifts','اطلب واحجز وأرسل هدايا')}</div></div><span class="chev">›</span></div>
+ <div class="card click onb" onclick="chooseRole('owner')"><div class="ico">🏪</div><div class="grow" style="text-align:start"><b>${x('I own a shop or salon','عندي محل أو صالون')}</b><div class="sub m0">${x('Register your business and receive orders','سجّل محلك واستقبل الطلبات')}</div></div><span class="chev">›</span></div>
+ <div class="sub">${x('You can change this later from your profile.','تقدر تغيّره بعدين من حسابك.')}</div></div></div></div></div>`}
+function adminPanel(){
+ const tabs=[['overview',x('Overview','نظرة عامة')],['shops',x('Shops','المحلات')],['orders',x('Orders','الطلبات')],['gifts',x('Gifts','الهدايا')],['apps',x('Requests','الطلبات الجديدة')+(appList().filter(a=>a.status==='pending').length?' ('+appList().filter(a=>a.status==='pending').length+')':'')]];let body='';
+ const os=Object.values(S.orders),gs=Object.values(S.gifts);
+ if(S.adminTab==='overview'){const users=new Set();os.forEach(o=>users.add(o.uid));gs.forEach(g=>{users.add(g.from);if(g.claimer)users.add(g.claimer)});
+  const box=(l,v)=>`<div class="stat"><b>${v}</b>${l}</div>`;
+  body=`<div class="grid">${box(x('Shops','المحلات'),BIZ.length)}${box(x('Orders','الطلبات'),os.length)}${box(x('Gifts','الهدايا'),gs.length)}${box(x('Users','المستخدمين'),users.size)}</div><h2>${x('Gift card designs','تصاميم البطاقات')}</h2><div class="chips">${CARDS.map(c=>`<span class="pill">${c.e} ${h(nm(c.n))}</span>`).join('')}</div><h2>${x('Categories','الأقسام')}</h2><div class="chips"><span class="pill">${x('Salons','صوالين')}</span><span class="pill">${x('Shops','متاجر')}</span></div><div class="sub">${x('Editing card designs and categories will come later.','تعديل التصاميم والأقسام راح يجي لاحقاً.')}</div>`}
+ if(S.adminTab==='apps')body=vApps();
+ if(S.adminTab==='shops')body=BIZ.map(b=>{const s=(sh(b.id).status||'approved')==='approved';return `<div class="card row"><div class="row g"><div class="emo">${b.e}</div><div><b>${h(nm(b.n))}</b> <span class="pill">${typeName(b)}</span><div class="sub m0">${h(nm(b.area))}</div></div></div><button class="btn sm ${s?'bad':''}" onclick="putShop('${b.id}',{status:'${s?'suspended':'approved'}'})">${s?x('Suspend','إيقاف'):x('Approve','اعتماد')}</button></div>`}).join('');
+ if(S.adminTab==='orders')body=`<table class="tbl"><tr><th>#</th><th>${x('Shop','المحل')}</th><th>${x('Customer','العميل')}</th><th>${x('Total','المجموع')}</th><th>${x('Status','الحالة')}</th></tr>${os.sort((a,c)=>c.ts-a.ts).slice(0,40).map(o=>`<tr><td>${o.num}</td><td>${bz(o.biz)?h(nm(bz(o.biz).n)):''}</td><td>${h(o.uname)}</td><td>${o.giftCode?'🎁':money(o.total)}</td><td>${bz(o.biz)?stLabel(o):''}</td></tr>`).join('')}</table>`;
+ if(S.adminTab==='gifts')body=`<table class="tbl"><tr><th>${x('Code','الكود')}</th><th>${x('Shop','المحل')}</th><th>${x('From → To','من ← إلى')}</th><th>${x('Total','المجموع')}</th><th>${x('Status','الحالة')}</th></tr>${gs.sort((a,c)=>c.ts-a.ts).slice(0,40).map(g=>`<tr><td dir="ltr">${g.code}</td><td>${bz(g.biz)?h(nm(bz(g.biz).n)):''}</td><td>${h(g.fromName)} → ${h(g.toName)}</td><td>${money(g.total)}</td><td>${gLabel(gStatus(g))}</td></tr>`).join('')}</table>`;
+ return `<div class="panel"><div class="wrap"><h1>${x('Admin','الإدارة')}</h1><div class="chips">${tabs.map(t=>`<button class="${S.adminTab===t[0]?'on':''}" onclick="S.adminTab='${t[0]}';nav();render()">${t[1]}</button>`).join('')}</div>${body}</div></div>`}
+
+
+/* ---------- Supabase connection ---------- */
+const CFG=window.SARVA_CFG||{url:'https://rocpycblnopvabgwcsrr.supabase.co',key:'sb_publishable_2z_LQ_Ce-wUVtgsZRB20iw_0JfMEzEf'};
+const sb=window.supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const q=async p=>{const r=await p;if(r.error)throw r.error;return r.data};
+const tms=s=>s?Date.parse(s):0;
+const isoMs=ms=>new Date(ms).toISOString();
+const pubCard=p=>p?sb.storage.from('cards').getPublicUrl(p).data.publicUrl:'';
+const ERR=[[/duplicate key.*cr|shops_cr_unique/i,'This commercial registration is already registered','السجل التجاري مسجّل من قبل'],
+ [/Invalid login/i,'Wrong e-mail or password','الإيميل أو كلمة المرور غلط'],[/already registered|already been registered/i,'This e-mail already has an account. Sign in instead.','هذا الإيميل مسجّل من قبل. سجّل دخول.'],
+ [/shop is busy/i,'The shop is busy right now','المحل مشغول الحين'],[/shop is not available/i,'This shop is not available','المحل مو متاح'],
+ [/item not available/i,'An item is no longer available','صنف ما عاد متوفر'],[/gift already claimed/i,'This gift was already claimed','الهدية انستلمت من قبل'],
+ [/gift expired/i,'This gift has expired','انتهت صلاحية الهدية'],[/not available yet/i,'Not available yet','مو متاحة للحين'],[/already redeemed/i,'Already redeemed','انصرفت من قبل'],
+ [/another shop/i,'This gift is for another shop','هذي الهدية لمحل ثاني'],[/gift not found/i,'Gift not found','الهدية غير موجودة'],
+ [/Password should be|weak/i,'Password is too short (min 8 characters)','كلمة المرور قصيرة (٨ أحرف على الأقل)'],[/rate limit|too many/i,'Too many tries. Wait a minute and try again.','محاولات كثيرة. انتظر دقيقة وجرب مرة ثانية.'],
+ [/Failed to fetch|NetworkError|network/i,'No connection. Check your internet.','ما فيه اتصال. تأكد من الإنترنت.']];
+function fail(e,fb){const m=String((e&&e.message)||e||'');const r=ERR.find(a=>a[0].test(m));toast(r?x(r[1],r[2]):(fb?x(fb[0],fb[1]):x('Something went wrong','صار خطأ'))+(m&&!fb?' ('+m.slice(0,80)+')':''));try{console.warn('sarva',e)}catch(_){}}
+
+/* ---------- data helpers ---------- */
+const visibleShops=()=>BIZ.filter(b=>(sh(b.id).status||'approved')==='approved'&&(!b.owner||menuOf(b).some(m=>!m.off)));
+const myApp=()=>{const s=S.mine;return s?{status:s.status,nAr:s.name_ar,nEn:s.name_en,area:s.area_ar||s.area_en,type:s.type,note:s.review_note,bid:s.id,phone:s.phone}:null};
+const rtxt=r=>r.n?`★ ${(+r.avg).toFixed(1)} (${r.n})`:x('New','جديد');
+function menuOf(b){const s=sh(b.id);return (s.items||[]).map(m=>({id:m.id,n:m.n,p:m.p,e:m.e,c:m.c,off:m.off,x:1}))}
+const ratingOf=b=>({avg:b.rating||0,n:b.rc||0});
+const stampsOf2=0;
+
+/* row -> the shapes the screens use */
+function mapShops(rows,rts){
+ const rt={};(rts||[]).forEach(r=>{rt[r.shop_id]=r});
+ rows.sort((a,b)=>(a.status==='approved'?0:1)-(b.status==='approved'?0:1)||tms(a.created_at)-tms(b.created_at));
+ BIZ.length=0;const sm={};
+ rows.forEach(s=>{
+  const cs=(s.categories||[]).slice().sort((a,b)=>a.sort-b.sort),ci={};cs.forEach((c,i)=>{ci[c.id]=i});
+  const cats=cs.length?cs.map(c=>[c.name_en||c.name_ar,c.name_ar||c.name_en]):[s.type==='salon'?['Services','الخدمات']:['Products','المنتجات']];
+  const r=rt[s.id]||{};
+  BIZ.push({id:s.id,owner:s.owner_id,type:s.type,e:s.emoji,n:[s.name_en||s.name_ar,s.name_ar||s.name_en],area:[s.area_en||s.area_ar,s.area_ar||s.area_en],dist:0,rating:+r.rating||0,rc:+r.rating_count||0,isNew:!!s.is_new&&!(+r.rating_count),hours:[s.open_hour,s.close_hour],phone:s.phone,cats,menu:[]});
+  const items=(s.menu_items||[]).slice().sort((a,b)=>a.sort-b.sort||tms(a.created_at)-tms(b.created_at)).map(m=>({id:m.id,n:[m.name_en||m.name_ar,m.name_ar||m.name_en],p:+m.price,e:m.emoji,c:ci[m.category_id]||0,off:!m.available}));
+  sm[s.id]={status:s.status,hours:[s.open_hour,s.close_hour],busy:s.busy,stamps:s.stamps_needed,rEn:s.reward_en,rAr:s.reward_ar,items,cat0:cs.map(c=>c.id)};
+ });
+ S.shops=sm;S.allShops=rows;S.mine=rows.find(s=>s.owner_id===S.uid)||null}
+const mapItems=(arr,k)=>(arr||[]).map(i=>({id:i.item_id,n:[i.name_en||i.name_ar,i.name_ar||i.name_en],p:+i.price,e:i.emoji,q:i.qty}));
+function mapOrder(o){return{id:o.id,num:o.num,uid:o.customer_id,uname:o.customer_name,biz:o.shop_id,items:mapItems(o.order_items),total:+o.total,mode:o.mode,carColor:o.car_color,carPlate:o.car_plate,slot:tms(o.slot),notes:o.notes,stage:o.stage,status:o.status,pay:o.pay,ts:tms(o.created_at),
+ hist:(o.order_events||[]).map(e=>({s:e.stage,ts:tms(e.at)})).sort((a,b)=>a.ts-b.ts),eta:o.eta||'',giftCode:o.gift_code||'',rating:o.rating,review:o.rating_note}}
+function mapGift(g,its,extra){return{code:g.code,id:g.id,from:g.sender_id,fromName:g.sender_name||(extra&&extra.from_name)||'',biz:g.shop_id,items:mapItems(its||g.gift_items),total:+g.total,card:g.card,img:g.card_image?pubCard(g.card_image):'',msg:g.message,toName:g.to_name,toPhone:g.to_phone||'',sendAt:(tms(g.send_at)>Date.now()?tms(g.send_at):0),ts:tms(g.created_at),exp:tms(g.expires_at),status:g.status,pay:g.pay,claimer:g.claimer_id||'',claimerName:g.claimer_name||'',thanks:g.thanks,claimTs:tms(g.claimed_at),redTs:tms(g.redeemed_at)}}
+
+/* ---------- loading ---------- */
+async function loadMe(){
+ const u=S.auth;let p=await q(sb.from('profiles').select('*').eq('id',u.id).maybeSingle());
+ if(!p){await sb.from('profiles').insert({id:u.id});p=await q(sb.from('profiles').select('*').eq('id',u.id).single())}
+ const md=u.user_metadata||{},patch={};
+ if(!p.name&&md.name)patch.name=String(md.name).slice(0,60);
+ if(!p.phone&&md.phone)patch.phone=String(md.phone).slice(0,20);
+ if(!p.onboarded&&(md.role==='owner'||md.role==='customer')){patch.onboarded=true;if(p.role!=='admin')patch.role=md.role}
+ if(Object.keys(patch).length)p=await q(sb.from('profiles').update(patch).eq('id',u.id).select().single());
+ S.me={...S.me,name:p.name,phone:p.phone,role:p.role,car:p.car_color,plate:p.car_plate,notif:p.notif,onboarded:p.onboarded};
+ S.canEdit=p.role==='admin';S.meLoaded=true}
+async function loadShops(){const[rows,rts]=await Promise.all([q(sb.from('shops').select('*,categories(*),menu_items(*)')),q(sb.from('shop_ratings').select('*'))]);mapShops(rows,rts);
+ if(!bz(S.shopId)){const m=S.mine&&S.mine.status==='approved'?S.mine.id:null;S.shopId=m||(BIZ.find(b=>(sh(b.id).status)==='approved')||BIZ[0]||{}).id||''}}
+async function loadOrders(){const rows=await q(sb.from('orders').select('*,order_items(*),order_events(*)').order('created_at',{ascending:false}).limit(300));
+ const prev=S.orders,m={};rows.forEach(o=>{m[o.id]=mapOrder(o)});S.orders=m;
+ if(S.loaded.orders&&S.view==='shop'){const nw=Object.keys(m).filter(k=>!prev[k]&&m[k].biz===S.shopId&&m[k].stage===0&&m[k].uid!==S.uid);if(nw.length){beep();toast(x('New order!','طلب جديد!'))}}
+ S.loaded.orders=true}
+async function loadGifts(){const rows=await q(sb.from('gifts').select('*,gift_items(*)').order('created_at',{ascending:false}).limit(300));
+ const m={};rows.forEach(g=>{m[g.code]=mapGift(g)});Object.keys(S.ext).forEach(c=>{if(m[c])delete S.ext[c]});S.gifts={...S.ext,...m};S.loaded.gifts=true}
+async function loadNotes(){const rows=await q(sb.from('notifications').select('*').order('created_at',{ascending:false}).limit(80));const m={};rows.forEach(n=>{m[n.id]={id:n.id,uid:S.uid,en:n.en,ar:n.ar,ts:tms(n.created_at),read:n.read}});S.notes=m}
+async function loadPersonal(){
+ const[fv,cd]=await Promise.all([q(sb.from('favorites').select('*')),q(sb.from('saved_cards').select('*').order('created_at'))]);
+ S.favRows=fv;S.favs=fv.map(f=>f.item_id?'i:'+f.shop_id+'|'+f.item_id:'s:'+f.shop_id);
+ S.me.cards=cd.map(c=>({id:c.id,path:c.image_path,img:pubCard(c.image_path)}))}
+const LOADERS={shops:loadShops,orders:loadOrders,gifts:loadGifts,notes:loadNotes,personal:loadPersonal};
+async function refresh(list){await Promise.allSettled((list||Object.keys(LOADERS)).map(k=>LOADERS[k]()));softRender()}
+let rtT=0;function refreshSoon(k){clearTimeout(rtT);rtT=setTimeout(()=>refresh(k?[k]:null),300)}
+
+/* ---------- session ---------- */
+let chan=null,poll=null;
+async function onSession(sess){
+ if(S.ready&&S.uid===sess.user.id)return;
+ S.uid=sess.user.id;S.auth=sess.user;S.ready=false;render();
+ try{await loadMe()}catch(e){fail(e);return}
+ await Promise.allSettled([loadShops(),loadOrders(),loadGifts(),loadNotes(),loadPersonal()]);
+ S.ready=true;
+ if(S.me.role==='owner'&&!S.roleSeen&&S.me.onboarded){S.roleSeen=1;S.view='shop'}
+ try{if(chan)sb.removeChannel(chan);chan=sb.channel('sarva-'+S.uid);['orders','gifts','notifications','shops','menu_items'].forEach(t=>chan.on('postgres_changes',{event:'*',schema:'public',table:t},()=>refreshSoon(t==='notifications'?'notes':t==='menu_items'?'shops':t)));chan.subscribe()}catch(e){}
+ clearInterval(poll);let n=0;poll=setInterval(()=>{if(document.hidden||!S.ready)return;n++;refresh(n%6===0?null:['orders','gifts','notes'])},10000);
+ const qs=new URLSearchParams(location.search);
+ if(S.deep&&S.deep.gift&&S.me.onboarded){const c=S.deep.gift;S.deep=null;render();await openRecv(c);return}
+ if(qs.get('shop')&&bz(qs.get('shop'))&&!S.stack.length&&S.me.onboarded)S.stack=[{t:'shop',id:qs.get('shop')}];
+ render()}
+function resetState(){clearInterval(poll);try{if(chan)sb.removeChannel(chan)}catch(e){}chan=null;
+ Object.assign(S,{uid:null,auth:null,ready:false,me:{name:'',phone:''},canEdit:false,orders:{},gifts:{},ext:{},notes:{},shops:{},mine:null,allShops:[],favs:[],favRows:[],loaded:{},meLoaded:false,stack:[],tab:'home',view:'cust',cart:null,gf:null,roleSeen:0,reg:newReg(),au:{step:'role',mode:'login',role:'customer',email:'',pw:'',name:'',phone:'',msg:'',ok:false,busy:false}});BIZ.length=0}
+async function init(){
+ try{S.lang=localStorage.getItem('sarva_lang')||'ar'}catch(e){}
+ applyLang();
+ const qs=new URLSearchParams(location.search);
+ if(qs.get('gift'))S.deep={gift:qs.get('gift')};
+ sb.auth.onAuthStateChange((ev,sess)=>{setTimeout(()=>{
+  if(ev==='PASSWORD_RECOVERY'){S.recovery=true;render();return}
+  if(ev==='SIGNED_OUT'){if(S.uid){resetState();render()}return}
+  if(sess&&sess.user&&(ev==='SIGNED_IN'||ev==='INITIAL_SESSION'||ev==='TOKEN_REFRESHED'||ev==='USER_UPDATED')){if(S.uid!==sess.user.id||!S.ready)onSession(sess)}},0)});
+ let sess=null;try{sess=(await sb.auth.getSession()).data.session}catch(e){}
+ S.boot=true;
+ if(sess&&sess.user)await onSession(sess);else render()}
+
+function render(){
+ const sc=document.querySelector('.scroll,.panel'),y=sc?sc.scrollTop:0,keep=keepScroll;keepScroll=true;
+ const owner=S.me.role==='owner',vs=[['cust',x('Customer','العميل')],['shop',S.canEdit?x('Shop','المحل'):x('My business','محلي')]].concat(S.canEdit?[['admin',x('Admin','الإدارة')]]:[]);
+ const tb=`<div class="top"><b class="brand">Sarva</b>${S.uid&&S.ready&&S.me.onboarded&&(S.canEdit||owner)?`<div class="seg2">${vs.map(v=>`<button class="${S.view===v[0]?'on':''}" onclick="setView('${v[0]}')">${v[1]}</button>`).join('')}</div>`:''}<button class="lang" onclick="setLang()">${S.lang==='ar'?'EN':'عربي'}</button></div>`;
+ const splash=`<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span></span><span></span></div><div class="scroll"><div class="pad" style="text-align:center;padding-top:90px"><div class="avatar" style="margin:0 auto 12px;width:72px;height:72px;font-size:32px">S</div><div class="sub">${x('Loading…','جاري التحميل…')}</div></div></div></div></div>`;
+ if(!S.boot){$('app').innerHTML=tb+splash;return}
+ if(S.recovery||!S.uid){$('app').innerHTML=tb+vWelcome();return}
+ if(!S.ready){$('app').innerHTML=tb+splash;return}
+ if(!S.me.onboarded){$('app').innerHTML=tb+vOnb();return}
+ $('app').innerHTML=tb+(S.view==='cust'?customer():S.view==='shop'?(S.canEdit?shopDash():ownerHome()):adminPanel());
+ const n=document.querySelector('.scroll,.panel');if(n&&keep)n.scrollTop=y;
+ document.querySelectorAll('[data-qr]').forEach(el=>{el.innerHTML='';try{new QRCode(el,{text:el.dataset.qr,width:+el.dataset.size||150,height:+el.dataset.size||150})}catch(e){el.textContent=el.dataset.qr}});
+}
+const SV=()=>"saveMe()";
+/* ---------- profile ---------- */
+let meT=0;
+function saveMe(){clearTimeout(meT);meT=setTimeout(async()=>{try{await q(sb.from('profiles').update({name:S.me.name||'',phone:S.me.phone||'',car_color:S.me.car||'',car_plate:S.me.plate||'',notif:S.me.notif!==false}).eq('id',S.uid));
+  if(S.loaded.gifts)loadGifts().then(softRender).catch(()=>{});toast(x('Saved ✓','تم الحفظ ✓'))}catch(e){fail(e)}},250)}
+async function chooseRole(r){try{const p={onboarded:true};if(S.me.role!=='admin')p.role=r;await q(sb.from('profiles').update(p).eq('id',S.uid));
+ S.me.onboarded=true;if(S.me.role!=='admin')S.me.role=r;S.view=r==='owner'?'shop':'cust';S.roleSeen=1;nav();render();
+ if(S.deep&&S.deep.gift){const c=S.deep.gift;S.deep=null;openRecv(c)}}catch(e){fail(e)}}
+async function signOut(){try{await sb.auth.signOut()}catch(e){}if(S.uid){resetState();render()}}
+
+/* ---------- sign in / up ---------- */
+function newReg(){return{type:'salon',nAr:'',nEn:'',area:'',phone:'',o:9,c:22,owner:'',email:'',cr:'',exp:'',address:'',maps:'',ig:'',file:null,init:false}}
+const authInp=(k,ph,extra)=>`<input ${extra||''} placeholder="${ph}" value="${h(S.au[k]||'')}" oninput="S.au.${k}=this.value">`;
+function vWelcome(){const a=S.au;
+ if(S.recovery)return `<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span></span><span></span></div><div class="scroll"><div class="pad" style="padding-top:28px"><h1>${x('Choose a new password','اختر كلمة مرور جديدة')}</h1><div class="card"><input type="password" autocomplete="new-password" placeholder="${x('New password (8+ characters)','كلمة المرور الجديدة (٨ أحرف+)')}" oninput="S.au.pw=this.value"></div><button class="btn" onclick="doNewPw()">${x('Save','حفظ')}</button></div></div></div></div>`;
+ if(a.step==='role')return `<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span></span><span></span></div><div class="scroll"><div class="pad" style="text-align:center;padding-top:28px"><div class="avatar" style="margin:0 auto 12px;width:72px;height:72px;font-size:32px">S</div><h1>${x('Welcome to Sarva','أهلاً في سارفا')}</h1><div class="sub">${x('How will you use Sarva?','كيف بتستخدم سارفا؟')}</div>
+ <div class="card click onb" onclick="authStart('customer')"><div class="ico">🛍️</div><div class="grow" style="text-align:start"><b>${x('Sign up as a customer','سجّل كعميل')}</b><div class="sub m0">${x('Order, book and send gifts','اطلب واحجز وأرسل هدايا')}</div></div><span class="chev">›</span></div>
+ <div class="card click onb" onclick="authStart('owner')"><div class="ico">🏪</div><div class="grow" style="text-align:start"><b>${x('I own a shop or salon','أنا صاحب مشروع')}</b><div class="sub m0">${x('Register your business and receive orders','سجّل محلك واستقبل الطلبات')}</div></div><span class="chev">›</span></div>
+ <button class="btn sec" style="margin-top:10px" onclick="S.au.step='form';S.au.mode='login';S.au.msg='';render()">${x('I already have an account','عندي حساب')}</button></div></div></div></div>`;
+ const m=a.mode,t=m==='signup'?x('Create your account','أنشئ حسابك'):m==='reset'?x('Reset password','استرجاع كلمة المرور'):x('Sign in','تسجيل الدخول');
+ return `<div class="stage"><div class="phone"><div class="island"></div><div class="sbar"><span></span><span></span></div><div class="scroll"><div class="pad" style="padding-top:20px"><button class="back" onclick="S.au.step='role';S.au.msg='';render()"><span class="chev">‹</span> ${x('Back','رجوع')}</button><h1>${t}</h1>
+ ${m==='signup'?`<div class="sub">${a.role==='owner'?x('Business owner account','حساب صاحب مشروع'):x('Customer account','حساب عميل')}</div>`:''}
+ <div class="card">${m==='signup'?authInp('name',x('Your name','اسمك'),'autocomplete="name"')+authInp('phone',x('Mobile number (e.g. 55512345)','رقم الجوال (مثال 55512345)'),'dir="ltr" inputmode="tel" autocomplete="tel"'):''}
+ ${authInp('email',x('E-mail','الإيميل'),'dir="ltr" type="email" autocomplete="email"')}${m!=='reset'?`<input type="password" autocomplete="${m==='signup'?'new-password':'current-password'}" placeholder="${m==='signup'?x('Password (8+ characters)','كلمة المرور (٨ أحرف+)'):x('Password','كلمة المرور')}" oninput="S.au.pw=this.value" onkeydown="if(event.key==='Enter')doAuth()">`:''}</div>
+ ${a.msg?`<div class="banner ${a.ok?'ok':'bad'}">${h(a.msg)}</div>`:''}
+ <button class="btn" ${a.busy?'disabled':''} onclick="doAuth()">${a.busy?'…':m==='signup'?x('Sign up','سجّل'):m==='reset'?x('Send reset link','أرسل رابط الاسترجاع'):x('Sign in','دخول')}</button>
+ <div class="sub" style="text-align:center;margin-top:12px">${m==='login'?`<a href="#" onclick="S.au.mode='signup';S.au.role=S.au.role||'customer';S.au.msg='';render();return false">${x('Create an account','إنشاء حساب')}</a> · <a href="#" onclick="S.au.mode='reset';S.au.msg='';render();return false">${x('Forgot password?','نسيت كلمة المرور؟')}</a>`:`<a href="#" onclick="S.au.mode='login';S.au.msg='';render();return false">${x('I already have an account','عندي حساب')}</a>`}</div></div></div></div></div>`}
+function authStart(role){S.au={...S.au,step:'form',mode:'signup',role,msg:'',ok:false};render()}
+async function doAuth(){const a=S.au,em=(a.email||'').trim().toLowerCase();if(a.busy)return;
+ const bad=m=>{a.msg=m;a.ok=false;render()};
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return bad(x('Enter a valid e-mail','اكتب إيميل صحيح'));
+ if(a.mode==='reset'){a.busy=true;render();const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:BASE});a.busy=false;if(error){a.msg=x('Could not send the link. Try again.','ما قدرنا نرسل الرابط. جرب مرة ثانية.');a.ok=false}else{a.msg=x('If the e-mail exists, a reset link was sent.','إذا الإيميل مسجّل، أرسلنا لك رابط الاسترجاع.');a.ok=true}return render()}
+ if((a.pw||'').length<(a.mode==='signup'?8:1))return bad(a.mode==='signup'?x('Password must be 8+ characters','كلمة المرور لازم تكون ٨ أحرف أو أكثر'):x('Enter your password','اكتب كلمة المرور'));
+ if(a.mode==='signup'){if((a.name||'').trim().length<2)return bad(x('Enter your name','اكتب اسمك'));if(phKey(a.phone).length!==8)return bad(x('Enter a valid Qatar mobile number (8 digits)','اكتب رقم جوال قطري صحيح (٨ أرقام)'))}
+ a.busy=true;a.msg='';render();
+ try{
+  if(a.mode==='signup'){const{data,error}=await sb.auth.signUp({email:em,password:a.pw,options:{data:{name:a.name.trim(),phone:a.phone.trim(),role:a.role||'customer'},emailRedirectTo:BASE+location.search}});if(error)throw error;
+   if(!data.session){a.busy=false;a.msg=x('Account created. Check your e-mail and confirm it, then sign in.','انسوّى الحساب. افتح إيميلك وأكّده، بعدها سجّل دخول.');a.ok=true;a.mode='login';return render()}}
+  else{const{error}=await sb.auth.signInWithPassword({email:em,password:a.pw});if(error)throw error}
+  a.busy=false;a.pw='';
+ }catch(e){a.busy=false;const m=String(e.message||e),r=ERR.find(z=>z[0].test(m));a.msg=r?x(r[1],r[2]):m;a.ok=false;render()}}
+async function doNewPw(){const p=S.au.pw||'';if(p.length<8)return toast(x('Password must be 8+ characters','كلمة المرور لازم تكون ٨ أحرف أو أكثر'));
+ try{await q(sb.auth.updateUser({password:p}));S.recovery=false;S.au.pw='';toast(x('Password changed ✓','تم تغيير كلمة المرور ✓'));history.replaceState(null,'',BASE);render()}catch(e){fail(e)}}
+
+/* ---------- favorites ---------- */
+async function toggleFav(k){const on=S.favs.includes(k);on?S.favs=S.favs.filter(z=>z!==k):S.favs.push(k);render();
+ try{if(on){const f=S.favRows.find(r=>(r.item_id?'i:'+r.shop_id+'|'+r.item_id:'s:'+r.shop_id)===k);if(f)await q(sb.from('favorites').delete().eq('id',f.id))}
+  else{const[sid,iid]=k[0]==='s'?[k.slice(2),null]:k.slice(2).split('|');await q(sb.from('favorites').insert({user_id:S.uid,shop_id:sid,item_id:iid}))}
+  loadPersonal().then(softRender).catch(()=>{})}catch(e){fail(e);loadPersonal().then(softRender).catch(()=>{})}}
+
+/* ---------- orders ---------- */
+const orderFields=(b,f,salon)=>({shop_id:b.id,customer_id:S.uid,customer_name:S.me.name||x('Guest','ضيف'),mode:salon?'appointment':f.mode,car_color:f.mode==='curbside'&&!salon?f.car.trim():'',car_plate:f.mode==='curbside'&&!salon?f.plate.trim():'',slot:salon&&f.slot?isoMs(f.slot):null,notes:(f.notes||'').trim()});
+async function insertOrder(fields,items){
+ const o=await q(sb.from('orders').insert(fields).select('id').single());
+ try{await q(sb.from('order_items').insert(items.map(i=>({order_id:o.id,shop_id:fields.shop_id,item_id:i.id,qty:i.q}))))}
+ catch(e){try{await sb.from('orders').update({status:'cancelled'}).eq('id',o.id)}catch(_){}throw e}
+ return o.id}
+let busyW=false;
+async function placeOrder(){
+ const c=S.cart;if(!c||!c.lines.length||busyW)return;const b=bz(c.biz),f=S.cf,salon=b.type==='salon',menu=menuOf(b);
+ if(!isOpen(b)||sh(b.id).busy)return toast(x('Not taking orders right now','ما يستقبل طلبات الحين'));
+ if(!salon&&f.mode==='curbside'&&!(f.plate.trim()&&f.car.trim()))return toast(x('Enter your car color and plate number','اكتب لون السيارة ورقم اللوحة'));
+ if(salon&&!f.slot)return toast(x('No free slots','ما فيه مواعيد'));
+ const items=c.lines.map(l=>{const m=menu.find(m=>m.id===l.id);return m&&!m.off?{id:m.id,q:l.q}:null}).filter(Boolean);
+ if(!items.length)return toast(x('Items unavailable','الأصناف غير متوفرة'));
+ busyW=true;
+ try{const id=await insertOrder({...orderFields(b,f,salon),pay:'Unpaid'},items);await loadOrders();
+  S.cart=null;S.cf={mode:'pickup',car:'',plate:'',notes:'',slot:0};S.tab='orders';S.rt={n:0,c:''};nav();S.stack=[{t:'track',id}];render();toast(salon?x('Booking confirmed ✓','تم تأكيد الحجز ✓'):x('Order placed ✓','تم إرسال الطلب ✓'))}
+ catch(e){fail(e,['Could not place the order','ما قدرنا نرسل الطلب'])}finally{busyW=false}}
+async function cancelOrder(id){const o=S.orders[id];if(!o||o.stage!==0||o.status!=='active')return;
+ try{await q(sb.from('orders').update({status:'cancelled'}).eq('id',id));o.status='cancelled';render();toast(x('Order cancelled','تم إلغاء الطلب'))}catch(e){fail(e);loadOrders().then(softRender)}}
+async function submitRate(id){if(!S.rt.n)return toast(x('Pick stars','اختر نجوم'));
+ try{await q(sb.from('orders').update({rating:S.rt.n,rating_note:(S.rt.c||'').slice(0,500)}).eq('id',id));S.rt={n:0,c:''};await Promise.all([loadOrders(),loadShops()]);render()}catch(e){fail(e)}}
+async function openNotes(){push({t:'notes'});const un=myNotes().filter(n=>!n.read);if(!un.length)return;un.forEach(n=>{n.read=true});
+ try{await q(sb.from('notifications').update({read:true}).eq('user_id',S.uid).eq('read',false))}catch(e){}}
+async function setEta(id,v){try{await q(sb.from('orders').update({eta:String(v).slice(0,10)}).eq('id',id));if(S.orders[id])S.orders[id].eta=v}catch(e){fail(e)}}
+async function advance(id){const o=S.orders[id];if(!o||o.status!=='active'||o.stage>=4)return;const ns=o.stage+1;
+ try{await q(sb.from('orders').update({stage:ns}).eq('id',id));
+  if(ns===4&&o.giftCode){const g=S.gifts[o.giftCode];if(g&&g.status!=='redeemed')await redeemGift(g)}
+  await Promise.all([loadOrders(),loadGifts()]);render()}catch(e){fail(e);loadOrders().then(softRender)}}
+async function rejectO(id){try{await q(sb.from('orders').update({status:'rejected'}).eq('id',id));await loadOrders();render()}catch(e){fail(e)}}
+
+/* ---------- gifts ---------- */
+async function shrink(dataUrl){return new Promise((res,rej)=>{const im=new Image();im.onerror=()=>rej(new Error('image'));im.onload=()=>{
+ let k=Math.min(1,1000/Math.max(im.width,im.height)),ql=.85;const go=()=>{const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+  c.toBlob(b=>{if(!b)return rej(new Error('image'));if(b.size>900*1024&&ql>.5){ql-=.15;k*=.85;return go()}res(b)},'image/jpeg',ql)};go()};im.src=dataUrl})}
+async function uploadCard(dataUrl){const blob=await shrink(dataUrl),path=S.uid+'/'+(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random().toString(16).slice(2))+'.jpg';
+ const r=await sb.storage.from('cards').upload(path,blob,{contentType:'image/jpeg'});if(r.error)throw r.error;return path}
+function addMyCard(){if(myCards().length>=8)return toast(x('You can save up to 8 cards. Delete one first.','تقدر تحفظ ٨ بطاقات. احذف وحدة أول.'));
+ const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=()=>{const f=i.files&&i.files[0];if(!f)return;readImg(f,src=>openEditor(src,async d=>{
+  try{const path=await uploadCard(d),row=await q(sb.from('saved_cards').insert({user_id:S.uid,image_path:path}).select().single());
+   const c={id:row.id,path,img:pubCard(path)};S.me.cards=myCards().concat([c]);const g=S.gf;if(g&&curS()&&curS().t==='gf'){g.card='custom';g.img=c.img}render();toast(x('Card saved ✓','تم حفظ البطاقة ✓'))}catch(e){fail(e,['Could not save the card','ما قدرنا نحفظ البطاقة'])}}))};i.click()}
+function editMy(id){const c=myCards().find(z=>z.id===id);if(!c)return;openEditor(c.img,async d=>{
+ try{const path=await uploadCard(d);await q(sb.from('saved_cards').update({image_path:path}).eq('id',id));try{await sb.storage.from('cards').remove([c.path])}catch(_){}
+  S.me.cards=myCards().map(z=>z.id===id?{id,path,img:pubCard(path)}:z);render();toast(x('Card updated ✓','تم تحديث البطاقة ✓'))}catch(e){fail(e)}})}
+async function delMy(id){const c=myCards().find(z=>z.id===id);if(!c)return;
+ try{await q(sb.from('saved_cards').delete().eq('id',id));try{await sb.storage.from('cards').remove([c.path])}catch(_){}S.me.cards=myCards().filter(z=>z.id!==id);back();toast(x('Card deleted','تم حذف البطاقة'))}catch(e){fail(e)}}
+async function payGift(){const g=S.gf,items=gfItems();if(!items.length||busyW)return;busyW=true;
+ try{const mc=g.card==='custom'?myCards().find(c=>c.img===g.img):null;
+  if(g.card==='custom'&&!mc)return toast(x('Pick one of your saved cards','اختر وحدة من بطاقاتك المحفوظة'));
+  const sendAt=g.when==='later'?Date.parse(g.at):0;if(g.when==='later'&&!(sendAt>Date.now()))return toast(x('Pick a future date and time','اختر وقت في المستقبل'));
+  const row=await q(sb.from('gifts').insert({sender_id:S.uid,shop_id:g.biz,card:g.card,card_image:mc?mc.path:null,message:g.msg.trim(),to_name:g.toName.trim(),to_phone:g.toPhone.trim(),send_at:sendAt?isoMs(sendAt):new Date().toISOString()}).select('code,id').single());
+  try{await q(sb.from('gift_items').insert(items.map(i=>({gift_id:row.id,shop_id:g.biz,item_id:i.id,qty:i.q}))))}catch(e){throw e}
+  await loadGifts();S.gf=null;nav();S.stack=[{t:'gdetail',code:row.code}];S.tab='gifts';render();toast(x('Gift created 🎁','تم إنشاء الهدية 🎁'))}
+ catch(e){fail(e,['Could not create the gift','ما قدرنا ننشئ الهدية'])}finally{busyW=false}}
+async function openRecv(code){
+ try{let g=S.gifts[code];
+  if(!g){const j=await q(sb.rpc('get_gift',{p_code:String(code).trim()}));if(!j)return toast(x('Gift not found','الهدية غير موجودة'));g=mapGift(j.gift,j.items,{from_name:j.from_name});S.ext[g.code]=g;S.gifts[g.code]=g;code=g.code;
+   if(!bz(g.biz)&&j.shop){BIZ.push({id:j.shop.id,type:j.shop.type,e:j.shop.emoji,n:[j.shop.name_en||j.shop.name_ar,j.shop.name_ar||j.shop.name_en],area:['',''],dist:0,rating:0,rc:0,isNew:false,hours:[0,24],phone:'',cats:[['Items','الأصناف']],menu:[]});S.shops[j.shop.id]={status:'approved',hours:[0,24],items:[],busy:false}}}
+  if(gStatus(g)==='sent'&&g.from!==S.uid){try{await sb.rpc('open_gift',{p_code:code});g.status='opened'}catch(e){}}
+  if(isRecv(g)&&!g.claimer&&g.from!==S.uid&&['sent','opened'].includes(gStatus(g))){await q(sb.rpc('claim_gift',{p_code:code}));await loadGifts()}
+  nav();if(curS()&&curS().t==='grecv')S.stack.pop();S.stack.push({t:'grecv',code});render()}
+ catch(e){fail(e)}}
+async function claimGift(code){const g=S.gifts[code],st=gStatus(g);if(st!=='sent'&&st!=='opened')return;
+ try{await q(sb.rpc('claim_gift',{p_code:code}));await Promise.all([loadGifts(),loadShops()]);render();toast(x('Gift claimed 🎁','تم استلام الهدية 🎁'))}catch(e){fail(e)}}
+async function thankGift(code){try{await q(sb.rpc('thank_gift',{p_code:code}));if(S.gifts[code])S.gifts[code].thanks=true;render();toast('💛')}catch(e){fail(e)}}
+async function placeGiftOrder(code){const g=S.gifts[code],b=bz(g.biz),f=S.cf,salon=b.type==='salon';if(busyW)return;
+ if(!isOpen(b)||sh(b.id).busy)return toast(x('Not taking orders right now','ما يستقبل طلبات الحين'));
+ if(!salon&&f.mode==='curbside'&&!(f.plate.trim()&&f.car.trim()))return toast(x('Enter your car color and plate number','اكتب لون السيارة ورقم اللوحة'));
+ if(salon&&!f.slot)return toast(x('No free slots','ما فيه مواعيد'));
+ busyW=true;
+ try{const id=await insertOrder({...orderFields(b,{...f,notes:''},salon),gift_id:g.id,pay:'Gift'},g.items.map(i=>({id:i.id,q:i.q})));await loadOrders();openTrack(id);toast(x('Order placed ✓','تم إرسال الطلب ✓'))}
+ catch(e){fail(e,['Could not place the order','ما قدرنا نرسل الطلب'])}finally{busyW=false}}
+async function redeemGift(g){await q(sb.rpc('redeem_gift',{p_code:g.code}))}
+async function redeemCode(){const c=(S.rc||'').trim(),g=S.gifts[c];if(!g||!(S.canEdit||g.biz===S.shopId))return toast(x('Code not found','الكود غير موجود'));if(g.biz!==S.shopId)return toast(x('This gift is for another shop','هذي الهدية لمحل ثاني'));
+ const st=gStatus(g);if(st==='redeemed')return toast(x('Already redeemed','انصرفت من قبل'));if(st==='expired')return toast(x('Expired','منتهية'));if(st==='scheduled')return toast(x('Not available yet','مو متاحة للحين'));if(st!=='claimed')return toast(x('Not claimed by the receiver yet','المستلم ما استلمها للحين'));
+ try{await redeemGift(g);const o=Object.values(S.orders).find(o=>o.giftCode===c&&o.status==='active'&&o.stage<4);if(o)await q(sb.from('orders').update({stage:4}).eq('id',o.id));
+  S.rc='';await Promise.all([loadGifts(),loadOrders()]);render();toast(x('Gift redeemed ✓','تم صرف الهدية ✓'))}catch(e){fail(e)}}
+async function sendFb(){const t=($('fbt').value||'').trim();if(!t)return toast(x('Write something first','اكتب شي أول'));
+ try{await q(sb.from('feedback').insert({user_id:S.uid,body:t.slice(0,2000)}));toast(x('Thank you for your feedback 💛','شكراً على رأيك 💛'));back()}catch(e){fail(e)}}
+
+/* ---------- shop dashboard writes ---------- */
+const SHOPCOL={status:'status',busy:'busy',stamps:'stamps_needed',rEn:'reward_en',rAr:'reward_ar'};
+async function putShop(id,patch){const s=S.shops[id]||(S.shops[id]={}),db={};
+ Object.keys(patch).forEach(k=>{if(k==='hours'){db.open_hour=patch.hours[0];db.close_hour=patch.hours[1]}else if(SHOPCOL[k])db[SHOPCOL[k]]=patch[k];s[k]=patch[k]});
+ if(db.stamps_needed!=null&&!(db.stamps_needed>=2&&db.stamps_needed<=20)){toast(x('Stamps: 2 to 20','الأختام: من ٢ إلى ٢٠'));await loadShops();return render()}
+ if(db.open_hour!=null&&!(db.close_hour>db.open_hour&&db.open_hour>=0&&db.close_hour<=24)){toast(x('Closing time must be after opening','وقت الإغلاق لازم يكون بعد الفتح'));await loadShops();return render()}
+ render();try{await q(sb.from('shops').update(db).eq('id',id));await loadShops();render()}catch(e){fail(e);loadShops().then(render)}}
+async function toggleOff(id){const it=(sh(S.shopId).items||[]).find(m=>m.id===id);if(!it)return;
+ try{await q(sb.from('menu_items').update({available:it.off}).eq('id',id));await loadShops();render()}catch(e){fail(e);loadShops().then(render)}}
+async function delExtra(id){
+ try{await q(sb.from('menu_items').delete().eq('id',id));await loadShops();render()}
+ catch(e){try{await q(sb.from('menu_items').update({available:false}).eq('id',id));await loadShops();render();toast(x('This item has past orders, so it was hidden instead','الصنف عليه طلبات سابقة، فتم إخفاؤه'))}catch(e2){fail(e2)}}}
+async function addExtra(){const f=S.nm;if(!f.en.trim()&&!f.ar.trim()||!(+f.p>0))return toast(x('Enter a name and price','اكتب الاسم والسعر'));
+ const s=sh(S.shopId),cid=(s.cat0||[])[+f.c]||null;
+ try{await q(sb.from('menu_items').insert({shop_id:S.shopId,category_id:cid,name_en:f.en.trim()||f.ar.trim(),name_ar:f.ar.trim()||f.en.trim(),price:+f.p,emoji:(f.e||'🛍️').trim().slice(0,8)||'🛍️',sort:(s.items||[]).length}));
+  S.nm={en:'',ar:'',p:'',e:'🛍️',c:0};await loadShops();render();toast(x('Item added','تمت الإضافة'))}catch(e){fail(e)}}
+
+/* ---------- business registration ---------- */
+function openBiz(){const a=myApp();if(a&&a.status==='approved'){S.view='shop';nav();render()}else push({t:'reg'})}
+function ownerHome(){const a=myApp();
+ if(a&&a.status==='approved'&&bz(a.bid)){S.shopId=a.bid;return shopDash()}
+ return `<div class="panel"><div class="wrap" style="max-width:480px">${vReg()}</div></div>`}
+function regInp(k,ph,extra){return `<input ${extra||''} placeholder="${ph}" value="${h(S.reg[k])}" oninput="S.reg.${k}=this.value">`}
+function pickDoc(el){const f=el.files&&el.files[0];if(!f)return;if(f.size>10*1024*1024){el.value='';return toast(x('File is too large (max 10 MB)','الملف كبير (الحد ١٠ ميغا)'))}
+ if(!/^(image\/(jpeg|png|webp)|application\/pdf)$/.test(f.type)){el.value='';return toast(x('Use a PDF or a photo (JPG/PNG)','استخدم PDF أو صورة (JPG/PNG)'))}S.reg.file=f;const n=$('docname');if(n)n.textContent='✓ '+f.name}
+function fillReg(){const s=S.mine,r=S.reg;if(r.init)return;r.init=true;r.owner=r.owner||S.me.name||'';r.email=r.email||(S.auth&&S.auth.email)||'';r.phone=r.phone||'';
+ if(s&&s.status==='rejected'){Object.assign(r,{type:s.type,nAr:s.name_ar,nEn:s.name_en,area:s.area_ar,phone:s.phone,o:s.open_hour,c:s.close_hour,owner:s.owner_name,email:s.contact_email,cr:s.cr_number,exp:s.cr_expiry||'',address:s.address,maps:s.maps_link,ig:s.instagram})}}
+function vReg(){const a=myApp(),r=S.reg;fillReg();
+ if(a&&a.status==='pending')return `<h1>${x('Under review','قيد المراجعة')}</h1><div class="card"><div class="row g"><div class="emo">⏳</div><div><b>${h(a.nAr||a.nEn)}</b><div class="sub m0">${a.type==='salon'?x('Salon','صالون'):x('Shop','متجر')} · ${h(a.area)}</div></div></div></div><div class="banner">${x('We received your request and are verifying your commercial registration. You will be notified when it is approved.','وصلنا طلبك وجاري التحقق من السجل التجاري. بيوصلك إشعار إذا تم اعتماده.')}</div>`;
+ if(a&&a.status==='suspended')return `<h1>${x('Business suspended','المحل موقوف')}</h1><div class="banner bad">${x('Your business is suspended. Contact Sarva.','محلك موقوف. تواصل مع سارفا.')}</div>`;
+ if(a&&a.status==='approved')return `<h1>${x('Your business is live','محلك شغال')} 🎉</h1><div class="card"><b>${h(a.nAr||a.nEn)}</b></div><button class="btn" onclick="openBiz()">${x('Open my dashboard','افتح لوحة محلي')}</button>`;
+ const hrsOpt=(v,lo,hi)=>Array.from({length:hi-lo+1},(_,i)=>lo+i).map(n=>`<option value="${n}" ${n===+v?'selected':''}>${String(n).padStart(2,'0')}:00</option>`).join('');
+ return `<h1>${x('Register your business','سجّل محلك')}</h1>${a&&a.status==='rejected'?`<div class="banner bad">${x('Your last request was not approved.','طلبك السابق ما انقبل.')} ${h(a.note||'')}<br>${x('Fix the details and send it again.','صحّح البيانات وأرسله مرة ثانية.')}</div>`:''}
+ <div class="seg"><button class="${r.type==='salon'?'on':''}" onclick="S.reg.type='salon';render()">💇 ${x('Salon','صالون')}</button><button class="${r.type==='shop'?'on':''}" onclick="S.reg.type='shop';render()">🛍️ ${x('Shop','متجر')}</button></div>
+ <div class="card"><b>${x('Business details','بيانات المحل')}</b>${regInp('nAr',x('Business name (Arabic)','اسم المحل (عربي)'))}${regInp('nEn',x('Business name (English, optional)','اسم المحل (إنجليزي، اختياري)'),'dir="ltr"')}${regInp('area',x('Area (e.g. The Pearl)','المنطقة (مثال: اللؤلؤة)'))}${regInp('address',x('Full address','العنوان بالتفصيل'))}${regInp('phone',x('Business phone','جوال المحل'),'dir="ltr" inputmode="tel"')}${regInp('maps',x('Google Maps link (optional)','رابط قوقل ماب (اختياري)'),'dir="ltr"')}${regInp('ig',x('Instagram (optional)','انستقرام (اختياري)'),'dir="ltr"')}
+ <label class="sub">${x('Opening hours (Doha time)','ساعات العمل (بتوقيت الدوحة)')}</label><div class="row"><select onchange="S.reg.o=+this.value">${hrsOpt(r.o,0,23)}</select><select onchange="S.reg.c=+this.value">${hrsOpt(r.c,1,24)}</select></div></div>
+ <div class="card"><b>${x('Owner and commercial registration','المالك والسجل التجاري')}</b>${regInp('owner',x('Owner full name','اسم المالك الكامل'))}${regInp('email',x('Contact e-mail','إيميل التواصل'),'dir="ltr" type="email"')}${regInp('cr',x('Commercial registration number (السجل التجاري)','رقم السجل التجاري'),'dir="ltr"')}
+ <label class="sub">${x('Registration expiry date','تاريخ انتهاء السجل')}</label><input type="date" dir="ltr" value="${h(r.exp)}" oninput="S.reg.exp=this.value">
+ <label class="sub">${x('Upload the commercial registration (PDF or photo)','ارفع صورة السجل التجاري (PDF أو صورة)')}</label><input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" onchange="pickDoc(this)"><div class="sub m0" id="docname">${r.file?'✓ '+h(r.file.name):''}</div></div>
+ <button class="btn" ${busyW?'disabled':''} onclick="submitApp()">${x('Send for review','أرسل للمراجعة')}</button><div class="sub" style="text-align:center;margin-top:8px">${x('Only Sarva can see your documents. After approval you can add your menu and start receiving orders.','المستندات ما يشوفها إلا فريق سارفا. بعد الاعتماد تضيف قائمتك وتبدأ تستقبل الطلبات.')}</div>`}
+async function submitApp(){const r=S.reg,prev=S.mine;if(busyW)return;
+ if(!(r.nAr.trim()||r.nEn.trim()))return toast(x('Enter the business name','اكتب اسم المحل'));if(!r.area.trim())return toast(x('Enter the area','اكتب المنطقة'));
+ if(String(r.phone).replace(/\D/g,'').length<8)return toast(x('Enter a valid phone number','اكتب رقم جوال صحيح'));if(r.c<=r.o)return toast(x('Closing time must be after opening','وقت الإغلاق لازم يكون بعد الفتح'));
+ if(!r.owner.trim())return toast(x('Enter the owner name','اكتب اسم المالك'));if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email.trim()))return toast(x('Enter a valid e-mail','اكتب إيميل صحيح'));
+ if(!/^[0-9A-Za-z\/ -]{3,30}$/.test(r.cr.trim()))return toast(x('Enter the commercial registration number (3–30 letters/digits)','اكتب رقم السجل التجاري (٣–٣٠ حرف أو رقم)'));
+ if(!r.exp)return toast(x('Enter the registration expiry date','اكتب تاريخ انتهاء السجل'));if(r.exp<new Date().toISOString().slice(0,10))return toast(x('The commercial registration has expired','السجل التجاري منتهي'));
+ if(!r.file&&!(prev&&prev.cr_document))return toast(x('Upload the commercial registration document','ارفع مستند السجل التجاري'));
+ busyW=true;render();
+ try{let path=prev&&prev.cr_document;
+  if(r.file){const ext=(r.file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,5)||'bin';path=S.uid+'/'+Date.now()+'-cr.'+ext;
+   const up=await sb.storage.from('shop-docs').upload(path,r.file,{contentType:r.file.type});if(up.error)throw up.error}
+  const row={type:r.type,name_ar:r.nAr.trim(),name_en:r.nEn.trim(),area_ar:r.area.trim(),area_en:r.area.trim(),phone:r.phone.trim(),emoji:r.type==='salon'?'💇':'🛍️',open_hour:r.o,close_hour:r.c,owner_name:r.owner.trim(),contact_email:r.email.trim(),cr_number:r.cr.trim(),cr_expiry:r.exp,cr_document:path,address:r.address.trim(),maps_link:r.maps.trim(),instagram:r.ig.trim()};
+  if(prev)await q(sb.from('shops').update({...row,status:'pending'}).eq('id',prev.id));else await q(sb.from('shops').insert({...row,owner_id:S.uid,status:'pending'}));
+  r.file=null;await loadShops();toast(x('Request sent ✓','تم إرسال الطلب ✓'))}
+ catch(e){fail(e,['Could not send the request','ما قدرنا نرسل الطلب'])}finally{busyW=false;render()}}
+async function decideApp(id,ok){const s=S.allShops.find(z=>z.id===id);if(!s)return;const note=ok?'':((S.rn[id]||'').trim().slice(0,300));
+ try{await q(sb.from('shops').update({status:ok?'approved':'rejected',review_note:note}).eq('id',id));await loadShops();render()}catch(e){fail(e)}}
+async function viewDoc(path){try{const r=await sb.storage.from('shop-docs').createSignedUrl(path,120);if(r.error)throw r.error;window.open(r.data.signedUrl,'_blank','noopener')}catch(e){fail(e)}}
+const appList=()=>(S.allShops||[]).filter(s=>s.owner_id);
+function vApps(){const l=appList().sort((a,c)=>(a.status==='pending'?0:1)-(c.status==='pending'?0:1)||tms(c.created_at)-tms(a.created_at));
+ const lab=s=>s==='pending'?x('Pending','قيد المراجعة'):s==='approved'?x('Approved','معتمد'):s==='suspended'?x('Suspended','موقوف'):x('Rejected','مرفوض');
+ return l.length?l.map(a=>`<div class="card"><div class="row"><b>${a.type==='salon'?'💇':'🛍️'} ${h(a.name_ar||a.name_en)} ${a.name_en&&a.name_ar?`<span class="sub">(${h(a.name_en)})</span>`:''}</b><span class="pill ${a.status==='approved'?'ok':a.status==='pending'?'':'bad'}">${lab(a.status)}</span></div>
+ <div class="sub m0">${h(a.area_ar)} · <span dir="ltr">${h(a.phone)}</span> · ${a.open_hour}–${a.close_hour}</div><div class="sub m0">${x('Owner','المالك')}: ${h(a.owner_name||'—')} · <span dir="ltr">${h(a.contact_email)}</span> · ${fmtDT(tms(a.created_at))}</div>
+ <div class="sub m0">${x('Address','العنوان')}: ${h(a.address||'—')}</div><div class="sub m0">${x('CR','السجل')}: <b dir="ltr">${h(a.cr_number)}</b> · ${x('expires','ينتهي')} <span dir="ltr">${h(a.cr_expiry||'—')}</span></div>
+ ${a.cr_document?`<button class="btn sm sec" onclick="viewDoc('${h(a.cr_document)}')">📄 ${x('View document','عرض المستند')}</button>`:''}
+ ${a.status==='pending'?`<input placeholder="${x('Reason if rejecting (optional)','سبب الرفض (اختياري)')}" value="${h(S.rn[a.id]||'')}" oninput="S.rn['${a.id}']=this.value"><div class="row" style="gap:8px"><button class="btn sm bad" onclick="decideApp('${a.id}',false)">${x('Reject','رفض')}</button><button class="btn sm" onclick="decideApp('${a.id}',true)">${x('Approve','اعتماد')}</button></div>`:''}</div>`).join(''):`<p class="empty">${x('No requests yet','ما فيه طلبات للحين')}</p>`}
+
+init();
+</script>
+</body>
+</html>
